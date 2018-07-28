@@ -5,7 +5,7 @@ import (
 	"github.com/jjmschofield/GoCook/ping/router/handlers"
 )
 
-func AddRoutes(router *gin.Engine) *gin.Engine{
+func AddApiRoutes(router *gin.Engine) *gin.Engine{
 	routerGroup := router.Group("ping")
 
 	addMiddleware(routerGroup);

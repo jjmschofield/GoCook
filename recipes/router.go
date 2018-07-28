@@ -2,11 +2,10 @@ package recipes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jjmschofield/GoCook/recipes/router/handlers"
 	"github.com/jjmschofield/GoCook/lib/auth"
 )
 
-func AddRoutes(router *gin.Engine) *gin.Engine{
+func AddApiRoutes(router *gin.Engine) *gin.Engine{
 	routerGroup := router.Group("recipes")
 
 	addMiddleware(routerGroup);
@@ -22,10 +21,10 @@ func addMiddleware(group *gin.RouterGroup) *gin.RouterGroup{
 
 func addRoutes(group *gin.RouterGroup) *gin.RouterGroup{
 
-	group.GET("", recipes.GetAllRequestHandler)
-	group.POST("", recipes.SaveRequestHandler)
+	group.GET("", getAllRequestHandler)
+	group.POST("", saveRequestHandler)
 
-	group.GET("/:id", recipes.GetByIdRequestHandler)
+	group.GET("/:id", getByIdRequestHandler)
 
 	return group;
 }

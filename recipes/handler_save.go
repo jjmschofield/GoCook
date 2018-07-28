@@ -2,13 +2,11 @@ package recipes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jjmschofield/GoCook/recipes/models"
-	"github.com/jjmschofield/GoCook/recipes/store"
 )
 
-func SaveRequestHandler(context *gin.Context){
+func saveRequestHandler(context *gin.Context){
 	var jsonBody struct {
-		Recipe recipes.Recipe `json:"recipe" binding:"required"`
+		Recipe Recipe `json:"recipe" binding:"required"`
 	}
 
 	bindError := context.Bind(&jsonBody)
@@ -18,7 +16,7 @@ func SaveRequestHandler(context *gin.Context){
 		isValid, validationMessage := jsonBody.Recipe.IsValid()
 
 		if(isValid){
-			savedRecipe := recipies.SaveToStore(jsonBody.Recipe)
+			savedRecipe := SaveToStore(jsonBody.Recipe)
 
 			responsePayload := gin.H{
 				"recipe": savedRecipe,
