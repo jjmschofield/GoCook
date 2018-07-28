@@ -26,7 +26,11 @@ $ go run src/main.go
   * An attempt at creating a domain orientated project structure, where each logical domain provides its own router and store (handy for splitting the project up in the future when it really takes of, is worth millions and needs to be split into a microservices architecture)
 * The start of authentication using oAuth 2
   * Everyone likes JWTs
-  * So far the `auth` package is only capable of returning JWKS from a JWKS endpoint
+  * The most popular library has been used `github.com/dgrijalva/jwt-go`
+  * Unsupported functionality has been added to support Auth0 (probably works for Okta too): 
+    * A mechanism for using JWKS (cached in memory)
+    * The construction of RSA256 Public Keys from the modulus and exponent
+  * The above is made available as middleware for gin  
 * An abstraction of `http` in `jsonHttp`
   * Making API requests in golang seems to have a fair old chunk of boiler plate
   * `jsonHttp` wraps `http` and abstracts the following:
