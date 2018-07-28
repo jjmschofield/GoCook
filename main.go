@@ -1,9 +1,9 @@
-package main
+package GoCook
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jjmschofield/GoCook/src/ping/router"
-	"github.com/jjmschofield/GoCook/src/recipes/router"
+	"github.com/jjmschofield/GoCook/ping/router"
+	"github.com/jjmschofield/GoCook/recipes/router"
 )
 
 func main() {

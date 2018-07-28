@@ -1,12 +1,12 @@
-package recipes
+package ping
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jjmschofield/GoCook/src/recipes/router/handlers"
+	"github.com/jjmschofield/GoCook/pingter/handlers"
 )
 
 func AddRoutes(router *gin.Engine) *gin.Engine{
-	routerGroup := router.Group("recipes")
+	routerGroup := router.Group("ping")
 
 	addMiddleware(routerGroup);
 	addRoutes(routerGroup);
@@ -19,12 +19,7 @@ func addMiddleware(group *gin.RouterGroup) *gin.RouterGroup{
 }
 
 func addRoutes(group *gin.RouterGroup) *gin.RouterGroup{
-
-	group.GET("", recipes.GetAllRequestHandler)
-	group.POST("", recipes.SaveRequestHandler)
-
-	group.GET("/:id", recipes.GetByIdRequestHandler)
-
+	group.GET("", ping.GetPingHandler)
 	return group;
 }
 

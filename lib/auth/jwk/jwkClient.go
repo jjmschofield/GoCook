@@ -3,7 +3,7 @@ package auth
 import (
 	"errors"
 	"log"
-	"github.com/jjmschofield/GoCook/src/lib/jsonHttp"
+	"github.com/jjmschofield/GoCook/libnHttp"
 )
 
 const endpointUrl = "https://jjmschofield.eu.auth0.com/.well-known/jwks.json";

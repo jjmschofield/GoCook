@@ -1,7 +1,7 @@
 package recipies
 
 import (
-	"github.com/jjmschofield/GoCook/src/recipes/models"
+	"github.com/jjmschofield/GoCook/recipesels"
 	"github.com/satori/go.uuid"
 )
 

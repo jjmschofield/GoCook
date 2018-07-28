@@ -2,8 +2,8 @@ package recipes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jjmschofield/GoCook/src/recipes/store"
-	"github.com/jjmschofield/GoCook/src/recipes/models"
+	"github.com/jjmschofield/GoCook/recipesre"
+	"github.com/jjmschofield/GoCook/recipesels"
 )
 
 func SaveRequestHandler(context *gin.Context){

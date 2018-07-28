@@ -1,7 +1,7 @@
 package recipes
 
 import (
-	"github.com/jjmschofield/GoCook/src/recipes/store"
+	"github.com/jjmschofield/GoCook/recipesre"
 	"github.com/gin-gonic/gin"
 )
 
