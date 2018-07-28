@@ -1,4 +1,4 @@
-package jsonHttp
+package jsonhttp
 
 import (
 	"net/http"

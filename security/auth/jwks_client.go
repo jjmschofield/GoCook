@@ -3,7 +3,7 @@ package auth
 import (
 	"errors"
 	"log"
-	"github.com/jjmschofield/GoCook/lib/jsonHttp"
+	"github.com/jjmschofield/GoCook/net/jsonhttp"
 	"fmt"
 	"crypto/rsa"
 )
@@ -72,7 +72,7 @@ func GetJWKS() ([]JWK, error){
 		Keys []JWK `json:"keys"`
 	}
 
-	error := jsonHttp.Get(endpointUrl, &jwks)
+	error := jsonhttp.Get(endpointUrl, &jwks)
 
 	return jwks.Keys, error
 }
