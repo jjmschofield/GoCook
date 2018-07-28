@@ -9,20 +9,19 @@ import (
 const expectedIssuer = "https://jjmschofield.eu.auth0.com/"
 const expectedAudience = "https://go-cook"
 
-func hasValidStandardClaims(token *jwt.Token) (bool, error){
-	claims := token.Claims.(jwt.MapClaims)
+func hasValidClaims(token *jwt.Token) (bool, error){
 
-	invalidExp, expError := hasExpired(claims["exp"].(float64))
+	invalidExp, expError := hasExpired(token)
 	if(invalidExp){
 		return false, expError
 	}
 
-	invalidAudience, audError := hasInvalidAudience(claims["aud"].(string))
+	invalidAudience, audError := hasInvalidAudience(token)
 	if(invalidAudience){
 		return false, audError
 	}
 
-	invalidIssuer, issError := hasInvalidIssuer(claims["iss"].(string))
+	invalidIssuer, issError := hasInvalidIssuer(token)
 	if(invalidIssuer){
 		return false, issError
 	}
@@ -30,7 +29,9 @@ func hasValidStandardClaims(token *jwt.Token) (bool, error){
 	return true, nil
 }
 
-func hasExpired(exp float64) (bool, error){
+func hasExpired(token *jwt.Token) (bool, error){
+	exp := token.Claims.(jwt.MapClaims)["exp"].(float64) // jwt-go is transforming this to a float64 undesirably
+
 	expiryTime := time.Unix(int64(exp), 0)
 
 	if(expiryTime.Before(time.Now())){
@@ -40,7 +41,9 @@ func hasExpired(exp float64) (bool, error){
 	return false, nil
 }
 
-func hasInvalidAudience(aud string)(bool, error){
+func hasInvalidAudience(token *jwt.Token)(bool, error){
+	aud := token.Claims.(jwt.MapClaims)["aud"].(string)
+
 	if(aud != expectedAudience){
 		return true, fmt.Errorf("Token audience %v is not valid", aud)
 	}
@@ -48,10 +51,13 @@ func hasInvalidAudience(aud string)(bool, error){
 	return false, nil
 }
 
-func hasInvalidIssuer(iss string)(bool, error){
+func hasInvalidIssuer(token *jwt.Token)(bool, error){
+	iss := token.Claims.(jwt.MapClaims)["iss"].(string)
+
 	if(iss != expectedIssuer){
 		return true, fmt.Errorf("Token audience %v is not valid", iss)
 	}
 
 	return false, nil
 }
+

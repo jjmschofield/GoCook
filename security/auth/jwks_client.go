@@ -12,8 +12,8 @@ const endpointUrl = "https://jjmschofield.eu.auth0.com/.well-known/jwks.json";
 
 var keyCache []JWK
 
-func getSigningPublicKey(kid string) (*rsa.PublicKey, error){
-	jwk, jwkError := tryGetJwk(kid);
+func getRsaPublicKey(kid string) (*rsa.PublicKey, error){
+	jwk, jwkError := getJwk(kid);
 
 	if(jwkError != nil){
 		return nil, fmt.Errorf("JWK with kid matching %v is not available", kid)
@@ -28,23 +28,23 @@ func getSigningPublicKey(kid string) (*rsa.PublicKey, error){
 	return publicKey, nil
 }
 
-func tryGetJwk(kid string) (JWK, error) {
+func getJwk(kid string) (JWK, error) {
 
 	for i := 0; i < 3; i++ {
-		jwk, inCache := getKeyFromCache(kid)
+		jwk, inCache := getJwkFromCache(kid)
 
 		if(inCache) {
 			return jwk, nil
 		} else {
 			log.Printf("Key %v not found in cache, refreshing key cache from JWKS endpoint", kid)
-			updateSigningKeysCache()
+			syncJwksCache()
 		}
 	}
 
 	return JWK{}, errors.New("JWK is not available")
 }
 
-func getKeyFromCache(kid string) (JWK, bool) {
+func getJwkFromCache(kid string) (JWK, bool) {
 
 	for i := range keyCache {
 		if keyCache[i].Kid == kid {
@@ -55,8 +55,8 @@ func getKeyFromCache(kid string) (JWK, bool) {
 	return JWK{}, false;
 }
 
-func updateSigningKeysCache() error{
-	keys, err := GetJWKS()
+func syncJwksCache() error{
+	keys, err := getJwksFromEndpoint()
 
 	if(err != nil){
 		return err
@@ -67,7 +67,7 @@ func updateSigningKeysCache() error{
 	return nil
 }
 
-func GetJWKS() ([]JWK, error){
+func getJwksFromEndpoint() ([]JWK, error){
 	var jwks struct {
 		Keys []JWK `json:"keys"`
 	}

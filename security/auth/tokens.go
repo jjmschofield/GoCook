@@ -8,24 +8,6 @@ import (
 	"errors"
 )
 
-func IsAuthenticatedMiddleware(context *gin.Context){
-	jwtToken, tokenError := getJwtToken(context)
-
-	if(tokenError != nil){
-		context.AbortWithError(401, tokenError)
-		return;
-	}
-
-	validStandardClaims, validationError := hasValidStandardClaims(jwtToken)
-
-	if(!validStandardClaims){
-		context.AbortWithError(401, validationError)
-		return;
-	}
-
-	context.Next()
-}
-
 func getJwtToken(context *gin.Context) (*jwt.Token, error){
 	bearerToken := getBearerToken(context)
 
@@ -57,7 +39,7 @@ func getSigningKey(token *jwt.Token) (interface{}, error){
 
 	kid := token.Header["kid"].(string)
 
-	return getSigningPublicKey(kid)
+	return getRsaPublicKey(kid)
 }
 
 func isSignedWithRsa256(token *jwt.Token) bool{
