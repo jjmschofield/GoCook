@@ -2,7 +2,6 @@ package ping
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jjmschofield/GoCook/ping/router/handlers"
 )
 
 func AddApiRoutes(router *gin.Engine) *gin.Engine{
@@ -19,7 +18,7 @@ func addMiddleware(group *gin.RouterGroup) *gin.RouterGroup{
 }
 
 func addRoutes(group *gin.RouterGroup) *gin.RouterGroup{
-	group.GET("", ping.GetPingHandler)
+	group.GET("", pongHandler)
 	return group;
 }
 
