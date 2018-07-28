@@ -5,6 +5,7 @@ import (
 	"log"
 	"io/ioutil"
 	"encoding/json"
+	"time"
 )
 
 func Get(url string, model interface{}) (error) {
@@ -31,7 +32,11 @@ func Get(url string, model interface{}) (error) {
 }
 
 func makeGetRequest(url string) (response *http.Response, error error){
-	response, responseError := http.Get(url)
+	var httpClient = &http.Client{ // The default http client does not set a sensible timeout - see https://medium.com/@nate510/don-t-use-go-s-default-http-client-4804cb19f779
+		Timeout: time.Second * 10,
+	}
+
+	response, responseError := httpClient.Get(url)
 
 	if(responseError != nil){
 		log.Fatal(responseError)
