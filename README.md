@@ -34,7 +34,7 @@ $ go run src/main.go
     * Reads the body into []byte
     * Binds the bodies []byte to a struct
     * "logs" errors and passes them back down to the caller
-  * Chances are there is a way better library for doing this but this does give quite a nice interface (even if it likes referential transparency):
+  * Chances are there is a way better library for doing this but this does give quite a nice interface (even if it lacks referential transparency):
 ```
 error := jsonHttp.Get(url, &structToBind);
 ```
