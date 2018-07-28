@@ -3,22 +3,40 @@ package auth
 import (
 	"errors"
 	"log"
-	"github.com/jjmschofield/GoCook/libnHttp"
+	"github.com/jjmschofield/GoCook/lib/jsonHttp"
+	"fmt"
+	"crypto/rsa"
 )
 
 const endpointUrl = "https://jjmschofield.eu.auth0.com/.well-known/jwks.json";
 
 var keyCache []JWK
 
-func GetSigningKey(kid string) (JWK, error) {
+func GetSigningPublicKey(kid string) (*rsa.PublicKey, error){
+	jwk, jwkError := tryGetJwk(kid);
+
+	if(jwkError != nil){
+		return nil, fmt.Errorf("JWK with kid matching %v is not available", kid)
+	}
+
+	publicKey, publicKeyError := createRsaPublicKey(jwk)
+
+	if(publicKeyError != nil){
+		return nil, publicKeyError
+	}
+
+	return publicKey, nil
+}
+
+func tryGetJwk(kid string) (JWK, error) {
 
 	for i := 0; i < 3; i++ {
 		jwk, inCache := getKeyFromCache(kid)
 
 		if(inCache) {
 			return jwk, nil
-		}else{
-			log.Print("Key not found in cache, requesting keys from JWKS endpoint")
+		} else {
+			log.Printf("Key %v not found in cache, refreshing key cache from JWKS endpoint", kid)
 			updateSigningKeysCache()
 		}
 	}
@@ -54,7 +72,7 @@ func GetJWKS() ([]JWK, error){
 		Keys []JWK `json:"keys"`
 	}
 
-	error := jsonHttp.Get(endpointUrl, &jwks);
+	error := jsonHttp.Get(endpointUrl, &jwks)
 
 	return jwks.Keys, error
 }
