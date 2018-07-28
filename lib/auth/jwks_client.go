@@ -12,7 +12,7 @@ const endpointUrl = "https://jjmschofield.eu.auth0.com/.well-known/jwks.json";
 
 var keyCache []JWK
 
-func GetSigningPublicKey(kid string) (*rsa.PublicKey, error){
+func getSigningPublicKey(kid string) (*rsa.PublicKey, error){
 	jwk, jwkError := tryGetJwk(kid);
 
 	if(jwkError != nil){

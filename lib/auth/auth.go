@@ -5,15 +5,21 @@ import (
 	"strings"
 	"github.com/dgrijalva/jwt-go"
 	"fmt"
-	"github.com/jjmschofield/GoCook/lib/auth/jwks"
 	"errors"
 )
 
 func IsAuthenticatedMiddleware(context *gin.Context){
-	_, tokenError := getJwtToken(context)
+	jwtToken, tokenError := getJwtToken(context)
 
 	if(tokenError != nil){
 		context.AbortWithError(401, tokenError)
+		return;
+	}
+
+	validStandardClaims, validationError := hasValidStandardClaims(jwtToken)
+
+	if(!validStandardClaims){
+		context.AbortWithError(401, validationError)
 		return;
 	}
 
@@ -51,7 +57,7 @@ func getSigningKey(token *jwt.Token) (interface{}, error){
 
 	kid := token.Header["kid"].(string)
 
-	return auth.GetSigningPublicKey(kid)
+	return getSigningPublicKey(kid)
 }
 
 func isSignedWithRsa256(token *jwt.Token) bool{

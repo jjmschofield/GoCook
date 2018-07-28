@@ -30,11 +30,12 @@ $ go run src/main.go
   * Unsupported functionality has been added to support Auth0 (probably works for Okta too): 
     * A mechanism for using JWKS (cached in memory)
     * The construction of RSA256 Public Keys from the modulus and exponent
+    * Validation of standard claims `exp`, `iss` and `aud`
   * The above is made available as middleware for gin  
 * An abstraction of `http` in `jsonHttp`
   * Making API requests in golang seems to have a fair old chunk of boiler plate
   * `jsonHttp` wraps `http` and abstracts the following:
-    * Makes the request
+    * Makes the request (with a sensible timeout)
     * Reads the body into []byte
     * Binds the bodies []byte to a struct
     * "logs" errors and passes them back down to the caller
