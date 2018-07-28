@@ -2,7 +2,7 @@ package ping
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jjmschofield/GoCook/pingter/handlers"
+	"github.com/jjmschofield/GoCook/ping/router/handlers"
 )
 
 func AddRoutes(router *gin.Engine) *gin.Engine{

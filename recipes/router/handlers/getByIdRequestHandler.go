@@ -1,8 +1,8 @@
 package recipes
 
 import (
-	"github.com/jjmschofield/GoCook/recipesre"
 	"github.com/gin-gonic/gin"
+	"github.com/jjmschofield/GoCook/recipes/store"
 )
 
 func GetByIdRequestHandler(context *gin.Context){

@@ -2,7 +2,8 @@ package recipes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jjmschofield/GoCook/recipester/handlers"
+	"github.com/jjmschofield/GoCook/recipes/router/handlers"
+	"github.com/jjmschofield/GoCook/lib/auth"
 )
 
 func AddRoutes(router *gin.Engine) *gin.Engine{
@@ -15,6 +16,7 @@ func AddRoutes(router *gin.Engine) *gin.Engine{
 }
 
 func addMiddleware(group *gin.RouterGroup) *gin.RouterGroup{
+	group.Use(auth.IsAuthenticatedMiddleware)
 	return group;
 }
 

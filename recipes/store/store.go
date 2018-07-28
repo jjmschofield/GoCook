@@ -1,8 +1,8 @@
 package recipies
 
 import (
-	"github.com/jjmschofield/GoCook/recipesels"
 	"github.com/satori/go.uuid"
+	"github.com/jjmschofield/GoCook/recipes/models"
 )
 
 var store = make(map [string]recipes.Recipe);
