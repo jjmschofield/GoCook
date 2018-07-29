@@ -6,9 +6,8 @@ import (
 	"github.com/jjmschofield/GoCook/net/jsonhttp"
 	"fmt"
 	"crypto/rsa"
+	"github.com/spf13/viper"
 )
-
-const endpointUrl = "https://jjmschofield.eu.auth0.com/.well-known/jwks.json";
 
 type jsonWebKey struct{
 	Alg string   `json:"alg"`
@@ -82,6 +81,8 @@ func getJwksFromEndpoint() ([]jsonWebKey, error){
 	var jwks struct {
 		Keys []jsonWebKey `json:"keys"`
 	}
+
+	endpointUrl := viper.GetString("AUTH_JWKS_ENDPOINT")
 
 	error := jsonhttp.Get(endpointUrl, &jwks)
 

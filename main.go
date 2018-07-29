@@ -1,16 +1,11 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/jjmschofield/GoCook/recipes"
-	"github.com/jjmschofield/GoCook/ping"
+	"github.com/jjmschofield/GoCook/config"
+	"github.com/jjmschofield/GoCook/server"
 )
 
 func main() {
-	router := gin.Default()
-
-	ping.AddApiRoutes(router)
-	recipes.AddApiRoutes(router)
-
-	router.Run(":8080")
+	config.LoadNonSensitiveConfig()
+	server.Start()
 }

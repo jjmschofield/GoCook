@@ -4,10 +4,8 @@ import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"time"
+	"github.com/spf13/viper"
 )
-
-const expectedIssuer = "https://jjmschofield.eu.auth0.com/"
-const expectedAudience = "https://go-cook"
 
 func hasValidClaims(token *jwt.Token) (bool, error){
 
@@ -44,6 +42,8 @@ func hasExpired(token *jwt.Token) (bool, error){
 func hasInvalidAudience(token *jwt.Token)(bool, error){
 	aud := token.Claims.(jwt.MapClaims)["aud"].(string)
 
+	expectedAudience := viper.GetString("AUTH_AUDIENCE")
+
 	if(aud != expectedAudience){
 		return true, fmt.Errorf("Token audience %v is not valid", aud)
 	}
@@ -53,6 +53,8 @@ func hasInvalidAudience(token *jwt.Token)(bool, error){
 
 func hasInvalidIssuer(token *jwt.Token)(bool, error){
 	iss := token.Claims.(jwt.MapClaims)["iss"].(string)
+
+	expectedIssuer := viper.GetString("AUTH_ISSUER")
 
 	if(iss != expectedIssuer){
 		return true, fmt.Errorf("Token audience %v is not valid", iss)
