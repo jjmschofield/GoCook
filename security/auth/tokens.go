@@ -39,7 +39,7 @@ func getSigningKey(token *jwt.Token) (interface{}, error){
 
 	kid := token.Header["kid"].(string)
 
-	return getRsaPublicKey(kid)
+	return getRsaPublicKeyFromJwks(kid)
 }
 
 func isSignedWithRsa256(token *jwt.Token) bool{

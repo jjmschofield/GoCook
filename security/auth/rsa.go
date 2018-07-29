@@ -9,7 +9,7 @@ import (
 	"encoding/base64"
 )
 
-func createRsaPublicKey(jwk JWK) (*rsa.PublicKey, error){
+func createRsaPublicKey(jwk jsonWebKey) (*rsa.PublicKey, error){
 	modulus, modulusError := getModulus(jwk.N)
 
 	if(modulusError != nil){
