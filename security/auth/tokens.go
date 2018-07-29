@@ -43,6 +43,6 @@ func getSigningKey(token *jwt.Token) (interface{}, error){
 }
 
 func isSignedWithRsa256(token *jwt.Token) bool{
-	_, isValid := token.Method.(*jwt.SigningMethodRSA)
-	return isValid;
+	_, isRsa := token.Method.(*jwt.SigningMethodRSA)
+	return isRsa;
 }

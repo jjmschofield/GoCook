@@ -10,13 +10,13 @@ import (
 )
 
 func createRsaPublicKey(jwk jsonWebKey) (*rsa.PublicKey, error){
-	modulus, modulusError := getModulus(jwk.N)
+	modulus, modulusError := getModulusBigInt(jwk.N)
 
 	if(modulusError != nil){
 		return nil, modulusError
 	}
 
-	exponent, exponentError := getExponent(jwk.E)
+	exponent, exponentError := getExponentInt(jwk.E)
 
 	if(exponentError != nil){
 		return nil, exponentError
@@ -30,7 +30,7 @@ func createRsaPublicKey(jwk jsonWebKey) (*rsa.PublicKey, error){
 	return &publicKey, nil
 }
 
-func getModulus(base64Modulus string)(*big.Int, error){
+func getModulusBigInt(base64Modulus string)(*big.Int, error){
 	decodedModulus, decodeError := safeBase64Decode(base64Modulus)
 
 	if decodeError != nil {
@@ -43,31 +43,39 @@ func getModulus(base64Modulus string)(*big.Int, error){
 	return modulus, nil;
 }
 
-func getExponent(base64Exponent string)(int, error){
-	decE, err := safeBase64Decode(base64Exponent)
-	if err != nil {
-		return -1, err
+func getExponentInt(base64Exponent string)(int, error){
+	decodedExponent, decodeError := safeBase64Decode(base64Exponent)
+
+	if decodeError != nil {
+		return -1, decodeError
 	}
 
-	var eBytes []byte
-	if len(decE) < 8 {
-		eBytes = make([]byte, 8-len(decE), 8)
-		eBytes = append(eBytes, decE...)
-	} else {
-		eBytes = decE
-	}
+	paddedExponent := getPaddedExponent(decodedExponent)
 
-	eReader := bytes.NewReader(eBytes)
+	binaryReader := bytes.NewReader(paddedExponent)
 
 	var exponent uint64
 
-	err = binary.Read(eReader, binary.BigEndian, &exponent)
+	binaryReadError := binary.Read(binaryReader, binary.BigEndian, &exponent)
 
-	if err != nil {
-		return -1, err
+	if binaryReadError != nil {
+		return -1, binaryReadError
 	}
 
 	return int(exponent), nil
+}
+
+func getPaddedExponent(exponent []byte) []byte{
+	var paddedExponent []byte
+
+	if len(exponent) < 8 {
+		paddedExponent = make([]byte, 8-len(exponent), 8)
+		paddedExponent = append(paddedExponent, exponent...)
+	} else {
+		paddedExponent = exponent
+	}
+
+	return paddedExponent
 }
 
 func safeBase64Decode(str string) ([]byte, error) {
