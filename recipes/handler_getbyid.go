@@ -7,11 +7,14 @@ import (
 func getByIdRequestHandler(context *gin.Context){
 	id := context.Param("id")
 
-	recipe := GetFromStoreById(id)
+	recipe, found := GetFromStoreById(id)
 
-	responsePayload := gin.H{
-		"recipe": recipe,
-	};
-
-	context.JSON(200, responsePayload)
+	if(found){
+		responsePayload := gin.H{
+			"recipe": recipe,
+		};
+		context.JSON(200, responsePayload)
+	} else{
+		context.Status(404)
+	}
 }

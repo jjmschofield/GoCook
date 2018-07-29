@@ -10,9 +10,9 @@ func GetAllFromStore() map [string]Recipe {
 	return store;
 }
 
-func GetFromStoreById(id string) Recipe {
-	recipe := store[id]
-	return recipe
+func GetFromStoreById(id string) (Recipe, bool) {
+	recipe, found := store[id]
+	return recipe, found
 }
 
 func SaveToStore(recipe Recipe) Recipe {
