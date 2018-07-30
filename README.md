@@ -7,34 +7,64 @@ This project isn't really anything serious - it exists largely for the author to
 
 # Getting Started
 * Install Go
-* Clone the project into your GOPATH
+* Clone the project into
+```
+$GOPATH/src/github.com/jjmschofield/GoCook
+```
 * Install go vendor
 ```
 $ go get github.com/kardianos/govendor
 ```
 * Install dependencies
 ```
-$ govendor fetch
+$ govendor sync
 ```
 * Run
 ```
-$ go run src/main.go 
+$ go run main.go
 ```
 
+# API Framework
+The project currently makes use of `github.com/gin-gonic/gin` as an API framework, picked largely as it is very minimalist and - providing the best learning opportunities for the author.
+
+# Authentication
+GoCook uses OAuth 2.0, provided (at the moment from Auth0) - `security/auth` is the package which you are looking for.
+
+Authentication will validate that a user has a valid session and should have access to the API by using JWT signed with a RSA256 private key.
+
+Switching to an alternate token issuer / IdP shouldn't be too much of a problem should you need to. 
+
+## Authenticating an API endpoint
+`security/auth` offers up `IsAuthenticatedMiddleware`. Use it as middleware on any endpoint or router that you want to force a valid user session for.
+
+## JWTs and JWKS and RSA256 oh my!
+The most popular JWT library on GitHub has been used to parse JWTs namely `github.com/dgrijalva/jwt-go`
+
+Unfortunately the current stable version (3.2.0) of the library has poor examples/documentation and a few limitations which have been worked around:
+
+* JWKS support
+  * Support for retrieving a key from  a JWKS has been added using the `kid` of the JWT
+  * Keys are cached (in a pretty naive and non-robust manner)
+     * Whenever a `kid` in a token can't be found the cache is resynced           
+* RSA256 support
+  * Support for creating an RSA 256 public key from the exponent and modulus of the retrieved JSON web key has been added 
+* Extended support for standard JWT claims
+  * `exp` is ensured to be in the future
+  * `iss` is ensured to be whatever is set in the config
+  * `aud` is ensured to be whatever is set in the config
+  
+Don't worry, you get all of this for free when calling `IsAuthenticatedMiddleware`.  
+
 # What It Does right Now
-* A restful API using `gin-gonic`
+* A restful API using `gin-gonic/gin`
   * An attempt at creating a domain orientated project structure, where each logical domain provides its own router and store (handy for splitting the project up in the future when it really takes of, is worth millions and needs to be split into a microservices architecture)
-* The start of authentication using oAuth 2
+* The start of authentication using oAuth 2 as gin middleware
   * Everyone likes JWTs
-  * The most popular library has been used `github.com/dgrijalva/jwt-go`
-  * Unsupported functionality has been added to support Auth0 (probably works for Okta too): 
-    * A mechanism for using JWKS (cached in memory)
-    * The construction of RSA256 Public Keys from the modulus and exponent
-    * Validation of standard claims `exp`, `iss` and `aud`
+  * Unsupported functionality has been added to support Auth0 (probably works for Okta too)
   * The above is made available as middleware for gin  
-* An abstraction of `http` in `jsonHttp`
+* An abstraction of `http` in `net/jsonhttp`
   * Making API requests in golang seems to have a fair old chunk of boiler plate
-  * `jsonHttp` wraps `http` and abstracts the following:
+  * `net/jsonhttp` wraps `http` and abstracts the following:
     * Makes the request (with a sensible timeout)
     * Reads the body into []byte
     * Binds the bodies []byte to a struct
