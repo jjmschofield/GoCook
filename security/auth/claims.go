@@ -10,17 +10,17 @@ import (
 func hasValidClaims(token *jwt.Token) (bool, error){
 
 	invalidExp, expError := hasExpired(token)
-	if(invalidExp){
+	if invalidExp {
 		return false, expError
 	}
 
 	invalidAudience, audError := hasInvalidAudience(token)
-	if(invalidAudience){
+	if invalidAudience {
 		return false, audError
 	}
 
 	invalidIssuer, issError := hasInvalidIssuer(token)
-	if(invalidIssuer){
+	if invalidIssuer {
 		return false, issError
 	}
 
@@ -32,7 +32,7 @@ func hasExpired(token *jwt.Token) (bool, error){
 
 	expiryTime := time.Unix(int64(exp), 0)
 
-	if(expiryTime.Before(time.Now())){
+	if expiryTime.Before(time.Now()) {
 		return true, fmt.Errorf("Token expired at %v", expiryTime)
 	}
 
@@ -44,7 +44,7 @@ func hasInvalidAudience(token *jwt.Token)(bool, error){
 
 	expectedAudience := viper.GetString("AUTH_AUDIENCE")
 
-	if(aud != expectedAudience){
+	if aud != expectedAudience {
 		return true, fmt.Errorf("Token audience %v is not valid", aud)
 	}
 
@@ -56,7 +56,7 @@ func hasInvalidIssuer(token *jwt.Token)(bool, error){
 
 	expectedIssuer := viper.GetString("AUTH_ISSUER")
 
-	if(iss != expectedIssuer){
+	if iss != expectedIssuer {
 		return true, fmt.Errorf("Token audience %v is not valid", iss)
 	}
 

@@ -5,16 +5,16 @@ import "github.com/gin-gonic/gin"
 func IsAuthenticatedMiddleware(context *gin.Context){
 	jwtToken, tokenError := getJwtToken(context)
 
-	if(tokenError != nil){
+	if tokenError != nil {
 		context.AbortWithError(401, tokenError)
-		return;
+		return
 	}
 
 	validStandardClaims, validationError := hasValidClaims(jwtToken)
 
-	if(!validStandardClaims){
+	if !validStandardClaims {
 		context.AbortWithError(401, validationError)
-		return;
+		return
 	}
 
 	context.Next()

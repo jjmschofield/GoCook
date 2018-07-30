@@ -12,13 +12,13 @@ import (
 func createRsaPublicKey(jwk jsonWebKey) (*rsa.PublicKey, error){
 	modulus, modulusError := getModulusBigInt(jwk.N)
 
-	if(modulusError != nil){
+	if modulusError != nil {
 		return nil, modulusError
 	}
 
 	exponent, exponentError := getExponentInt(jwk.E)
 
-	if(exponentError != nil){
+	if exponentError != nil {
 		return nil, exponentError
 	}
 
@@ -40,7 +40,7 @@ func getModulusBigInt(base64Modulus string)(*big.Int, error){
 	modulus := big.NewInt(0)
 	modulus.SetBytes(decodedModulus)
 
-	return modulus, nil;
+	return modulus, nil
 }
 
 func getExponentInt(base64Exponent string)(int, error){

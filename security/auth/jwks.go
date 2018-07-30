@@ -23,15 +23,15 @@ type jsonWebKey struct{
 var jwksCache []jsonWebKey
 
 func getRsaPublicKeyFromJwks(kid string) (*rsa.PublicKey, error){
-	jwk, jwkError := getJwk(kid);
+	jwk, jwkError := getJwk(kid)
 
-	if(jwkError != nil){
+	if jwkError != nil {
 		return nil, fmt.Errorf("jsonWebKey with kid matching %v is not available", kid)
 	}
 
 	publicKey, publicKeyError := createRsaPublicKey(jwk)
 
-	if(publicKeyError != nil){
+	if publicKeyError != nil {
 		return nil, publicKeyError
 	}
 
@@ -43,7 +43,7 @@ func getJwk(kid string) (jsonWebKey, error) {
 	for i := 0; i < 3; i++ {
 		jwk, inCache := getJwkFromCache(kid)
 
-		if(inCache) {
+		if inCache {
 			return jwk, nil
 		} else {
 			log.Printf("Key %v not found in cache, refreshing key cache from JWKS endpoint", kid)
@@ -62,13 +62,13 @@ func getJwkFromCache(kid string) (jsonWebKey, bool) {
 		}
 	}
 
-	return jsonWebKey{}, false;
+	return jsonWebKey{}, false
 }
 
 func syncJwksCache() error{
 	keys, err := getJwksFromEndpoint()
 
-	if(err != nil){
+	if err != nil {
 		return err
 	}
 
@@ -84,7 +84,7 @@ func getJwksFromEndpoint() ([]jsonWebKey, error){
 
 	endpointUrl := viper.GetString("AUTH_JWKS_ENDPOINT")
 
-	error := jsonhttp.Get(endpointUrl, &jwks)
+	requestError := jsonhttp.Get(endpointUrl, &jwks)
 
-	return jwks.Keys, error
+	return jwks.Keys, requestError
 }

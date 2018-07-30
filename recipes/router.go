@@ -8,15 +8,15 @@ import (
 func AddApiRoutes(router *gin.Engine) *gin.Engine{
 	routerGroup := router.Group("recipes")
 
-	addMiddleware(routerGroup);
-	addRoutes(routerGroup);
+	addMiddleware(routerGroup)
+	addRoutes(routerGroup)
 
-	return router;
+	return router
 }
 
 func addMiddleware(group *gin.RouterGroup) *gin.RouterGroup{
 	group.Use(auth.IsAuthenticatedMiddleware)
-	return group;
+	return group
 }
 
 func addRoutes(group *gin.RouterGroup) *gin.RouterGroup{
@@ -26,7 +26,7 @@ func addRoutes(group *gin.RouterGroup) *gin.RouterGroup{
 
 	group.GET("/:id", getByIdRequestHandler)
 
-	return group;
+	return group
 }
 
 

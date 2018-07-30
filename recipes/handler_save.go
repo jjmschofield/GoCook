@@ -11,22 +11,22 @@ func saveRequestHandler(context *gin.Context){
 
 	bindError := context.Bind(&jsonBody)
 
-	if(bindError == nil){
+	if bindError == nil {
 
 		isValid, validationMessage := jsonBody.Recipe.IsValid()
 
-		if(isValid){
+		if isValid {
 			savedRecipe := SaveToStore(jsonBody.Recipe)
 
 			responsePayload := gin.H{
 				"recipe": savedRecipe,
-			};
+			}
 
 			context.JSON(200, responsePayload)
 		} else {
 			responsePayload := gin.H{
 				"error": validationMessage,
-			};
+			}
 
 			context.JSON(400, responsePayload)
 		}

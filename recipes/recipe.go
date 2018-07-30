@@ -11,12 +11,12 @@ type Recipe struct{
 func (recipe *Recipe) IsValid() (bool, string) {
 
 	isValidName, validationMessage := recipe.nameIsValid()
-	if(!isValidName){
+	if !isValidName {
 		return false, validationMessage
 	}
 
 	isValidUrl, validationMessage := recipe.urlIsValid()
-	if(!isValidUrl){
+	if !isValidUrl {
 		return false, validationMessage
 	}
 
@@ -24,11 +24,11 @@ func (recipe *Recipe) IsValid() (bool, string) {
 }
 
 func (recipe *Recipe) nameIsValid() (bool, string){
-	if(len(recipe.Name) < 3){
+	if len(recipe.Name) < 3 {
 		return false, "Name is not set or is too short - minimum 3 characters required"
 	}
 
-	if(len(recipe.Name) > 50){
+	if len(recipe.Name) > 50 {
 		return false, "Name is too long - maximum 50 characters allowed"
 	}
 
@@ -36,10 +36,10 @@ func (recipe *Recipe) nameIsValid() (bool, string){
 }
 
 func (recipe *Recipe) urlIsValid() (bool, string){
-	if(len(recipe.Url) > 0){
+	if len(recipe.Url) > 0 {
 		_, urlParseError := url.ParseRequestURI(recipe.Url)
 
-		if(urlParseError != nil){
+		if urlParseError != nil {
 			return false, "Url is not valid"
 		}
 	}

@@ -12,7 +12,7 @@ func Get(url string, model interface{}) (error) {
 
 	response, responseError := makeGetRequest(url)
 
-	if(responseError != nil){
+	if responseError != nil {
 		return responseError
 	}
 
