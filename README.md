@@ -24,6 +24,23 @@ $ govendor sync
 $ go run main.go
 ```
 
+# Configuration
+Configuration is provided through the popular `github.com/spf13/viper` package.
+
+To add a config value - simply add it to `cook.json`.
+
+To use a config value, simply use the interface supplied by viper eg: `viper.GetString(<your config key>)`
+
+Presently only non-secure configuration values are supported - don't go adding secrets to `cook.json` unless you would like to share them with everyone on GitHub.
+
+At deploy time you will want to copy `cook.json` or create a specific one in a `config/` directory relative to the `main.exe` eg:
+
+```
+config/
+- cook.json
+main.exe
+```
+
 # API Framework
 The project currently makes use of `github.com/gin-gonic/gin` as an API framework, picked largely as it is very minimalist and - providing the best learning opportunities for the author.
 
