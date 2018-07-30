@@ -66,9 +66,9 @@ Unfortunately the current stable version (3.2.0) of the library has poor example
 * RSA256 support
   * Support for creating an RSA 256 public key from the exponent and modulus of the retrieved JSON web key has been added 
 * Extended support for standard JWT claims
-  * `exp` is ensured to be in the future
-  * `iss` is ensured to be whatever is set in the config
-  * `aud` is ensured to be whatever is set in the config
+  * `exp` is validated to be in the future
+  * `iss` is validated to be whatever is set in the config
+  * `aud` is validated to be whatever is set in the config
   
 Don't worry, you get all of this for free when calling `IsAuthenticatedMiddleware`.  
 
