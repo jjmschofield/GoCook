@@ -2,8 +2,8 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jjmschofield/GoCook/ping"
-	"github.com/jjmschofield/GoCook/recipes"
+	"github.com/jjmschofield/GoCook/api/ping"
+	"github.com/jjmschofield/GoCook/api/recipes"
 	"github.com/spf13/viper"
 )
 
