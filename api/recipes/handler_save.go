@@ -6,11 +6,11 @@ import (
 	"github.com/jjmschofield/GoCook/validate"
 )
 
-type saveRequestBody struct{
+type saveRequestBody struct {
 	Recipe Recipe `json:"recipe" binding:"required"`
 }
 
-func saveRequestHandler(context *gin.Context){
+func saveRequestHandler(context *gin.Context) {
 	var requestBody saveRequestBody
 
 	bindError := context.Bind(&requestBody)
@@ -31,11 +31,11 @@ func saveRequestHandler(context *gin.Context){
 	respond.Ok(context, createSaveResponsePayload(savedRecipe))
 }
 
-func isValidSaveRequest(recipe Recipe) (validRequest bool, validationMessage string ){
+func isValidSaveRequest(recipe Recipe) (validRequest bool, validationMessage string) {
 	return validate.Struct(recipe)
 }
 
-func createSaveResponsePayload(recipe Recipe) gin.H{
+func createSaveResponsePayload(recipe Recipe) gin.H {
 	responsePayload := gin.H{
 		"recipe": recipe,
 	}

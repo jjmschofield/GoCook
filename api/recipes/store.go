@@ -4,9 +4,9 @@ import (
 	"github.com/satori/go.uuid"
 )
 
-var store = make(map [string]Recipe)
+var store = make(map[string]Recipe)
 
-func GetAllFromStore() map [string]Recipe {
+func GetAllFromStore() map[string]Recipe {
 	return store
 }
 

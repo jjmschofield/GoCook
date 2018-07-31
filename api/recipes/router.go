@@ -5,7 +5,7 @@ import (
 	"github.com/jjmschofield/GoCook/security/auth"
 )
 
-func AddApiRoutes(router *gin.Engine) *gin.Engine{
+func AddApiRoutes(router *gin.Engine) *gin.Engine {
 	routerGroup := router.Group("recipes")
 
 	addMiddleware(routerGroup)
@@ -14,12 +14,12 @@ func AddApiRoutes(router *gin.Engine) *gin.Engine{
 	return router
 }
 
-func addMiddleware(group *gin.RouterGroup) *gin.RouterGroup{
+func addMiddleware(group *gin.RouterGroup) *gin.RouterGroup {
 	group.Use(auth.IsAuthenticatedMiddleware)
 	return group
 }
 
-func addRoutes(group *gin.RouterGroup) *gin.RouterGroup{
+func addRoutes(group *gin.RouterGroup) *gin.RouterGroup {
 
 	group.GET("", getAllRequestHandler)
 	group.POST("", saveRequestHandler)
@@ -28,6 +28,3 @@ func addRoutes(group *gin.RouterGroup) *gin.RouterGroup{
 
 	return group
 }
-
-
-

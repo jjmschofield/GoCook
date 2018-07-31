@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AddApiRoutes(router *gin.Engine) *gin.Engine{
+func AddApiRoutes(router *gin.Engine) *gin.Engine {
 	routerGroup := router.Group("ping")
 
 	addMiddleware(routerGroup)
@@ -13,14 +13,11 @@ func AddApiRoutes(router *gin.Engine) *gin.Engine{
 	return router
 }
 
-func addMiddleware(group *gin.RouterGroup) *gin.RouterGroup{
+func addMiddleware(group *gin.RouterGroup) *gin.RouterGroup {
 	return group
 }
 
-func addRoutes(group *gin.RouterGroup) *gin.RouterGroup{
+func addRoutes(group *gin.RouterGroup) *gin.RouterGroup {
 	group.GET("", pongHandler)
 	return group
 }
-
-
-
