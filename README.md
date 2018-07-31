@@ -42,14 +42,14 @@ main.exe
 ```
 
 # API Framework
-The project currently makes use of `github.com/gin-gonic/gin` as an API framework, picked largely as it is very minimalist and - providing the best learning opportunities for the author.
+The project currently makes use of `github.com/gin-gonic/gin` as an API framework, picked largely as it is very minimalist which provides a good learning opportunity for the author.
 
 # Authentication
-GoCook uses OAuth 2.0, provided (at the moment from Auth0) - `security/auth` is the package which you are looking for.
+GoCook uses OAuth 2.0, provided at the moment from Auth0 - `security/auth` is the package which you are looking for.
 
 Authentication will validate that a user has a valid session and should have access to the API by using JWT signed with a RSA256 private key.
 
-Switching to an alternate token issuer / IdP shouldn't be too much of a problem should you need to. 
+Switching to an alternate token issuer / IdP shouldn't be too much of a problem should you need to. Just configure the issuer, audience and JWKS endpoint in `cook.json` (don't worry, you can publically share this information). 
 
 ## Authenticating an API endpoint
 `security/auth` offers up `IsAuthenticatedMiddleware`. Use it as middleware on any endpoint or router that you want to force a valid user session for.
