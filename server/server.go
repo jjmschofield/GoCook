@@ -9,7 +9,11 @@ import (
 func Start(port string){
 	router := gin.Default()
 
+	router.LoadHTMLGlob("public/*")
+
+	router.GET("", rootHandler)
 	ping.AddApiRoutes(router)
 	recipes.AddApiRoutes(router)
+
 	router.Run(":" + port)
 }
