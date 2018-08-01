@@ -8,21 +8,35 @@
     <body class="pushable">
 
     <div class="pusher">
-        <div class="ui inverted vertical masthead center aligned segment">
+        <section class="ui inverted vertical masthead center aligned segment">
             <div class="ui text container">
                 <h1 class="ui inverted header">
-                    Nothing to see here... move along...
+                    Not much to see here... GoCook!
                 </h1>
             </div>
-        </div>
+        </section>
 
-        <div class="ui container">
-            <div class="ui center aligned vertical segment">
-                <img class="ui fluid image" src="http://78.media.tumblr.com/b38409bb329be3bbf3bb422f00ced476/tumblr_naqpuiHcCj1rey868o1_500.gif" />
-                <br />
-                <a href="https://github.com/jjmschofield/GoCook"><i class="github icon"></i>Source</a>
+        <div class="ui hidden divider"></div>
+
+        <section class="ui container">
+            <div class="ui grid">
+                <div class="eight wide column">
+                    <h1>Endpoints</h1>
+                    <div class="ui relaxed divided list">
+                        <div class="item"><a href="ping">GET:/ping</a></div>
+                        <div class="item"><a href="recipes">GET:/recipes</a> (requires auth)</div>
+                        <div class="item"><a href="recipes">POST:/recipes</a> (requires auth)</div>
+                        <div class="item"><a href="recipes/{id}">GET:/recipes/{id}</a> (requires auth)</div>
+                    </div>
+                    <p>Swagger coming soon...</p>
+                </div>
+                <div class="eight wide column">
+                    <img class="ui fluid image" src="https://i.giphy.com/media/demgpwJ6rs2DS/giphy.webp" />
+                    <br />
+                    <a href="https://github.com/jjmschofield/GoCook"><i class="github icon"></i>Source</a>
+                </div>
             </div>
-        </div>
+        </section>
     </div>
 
 </body>
