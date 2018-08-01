@@ -1,1 +1,1 @@
-web: GoCook
+web: GoCook --port 80
