@@ -26,7 +26,7 @@ GoCook makes use of Postgres for persistent storage, with database migrations ex
 * Run database migrations
 
 ### Running Database Migrations 
-* Grab [pre-built CLI](https://github.com/golang-migrate/migrate/releases) for migrate based on your architecture (see )
+* Grab the [pre-built CLI](https://github.com/golang-migrate/migrate/releases) for migrate based on your architecture
 ```
 $ cd db
 $ curl -L <pre-built binary> | tar xvz
