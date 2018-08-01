@@ -24,6 +24,11 @@ $ govendor sync
 $ go run main.go
 ```
 
+# Deployment
+This project publishes to http://go-cook.herokuapp.com/ on each push to the master branch.
+
+If you want to replicate this, simply fork this repo and point a heroku app and pipeline to your fork. Alternatively use the CLI as described in https://devcenter.heroku.com/articles/deploying-go
+
 # Configuration
 Configuration is provided through the popular `github.com/spf13/viper` package.
 
