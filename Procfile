@@ -1,1 +1,1 @@
-web: GoCook --port 80
+web: GoCook --port $PORT
