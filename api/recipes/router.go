@@ -2,7 +2,7 @@ package recipes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jjmschofield/GoCook/security/auth"
+	"github.com/jjmschofield/GoCook/utils/auth"
 )
 
 func AddApiRoutes(router *gin.Engine) *gin.Engine {

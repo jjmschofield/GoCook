@@ -3,7 +3,7 @@ package auth
 import (
 	"errors"
 	"log"
-	"github.com/jjmschofield/GoCook/net/jsonhttp"
+	"github.com/jjmschofield/GoCook/utils/jsonhttp"
 	"fmt"
 	"crypto/rsa"
 	"github.com/spf13/viper"

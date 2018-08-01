@@ -2,8 +2,8 @@ package recipes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jjmschofield/GoCook/respond"
-	"github.com/jjmschofield/GoCook/validate"
+	"github.com/jjmschofield/GoCook/utils/respond"
+	"github.com/jjmschofield/GoCook/utils/validate"
 )
 
 func getByIdRequestHandler(context *gin.Context) {
