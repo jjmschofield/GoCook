@@ -11,14 +11,6 @@ This project isn't really anything serious - it exists largely for the author to
 ```
 $GOPATH/src/github.com/jjmschofield/GoCook
 ```
-* Install go vendor
-```
-$ go get github.com/kardianos/govendor
-```
-* Install dependencies
-```
-$ govendor sync
-```
 * Run
 ```
 $ go run main.go
@@ -115,7 +107,6 @@ error := jsonHttp.Get(url, &structToBind);
 # Things to Watch Out For
 * This has been authored on a Winblowz box
   * I've not checked that the .gitattributes is correct yet - so watch your line endings!
-  * I've not checked that when the project is built on a Unix box it actually works
 * There are no unit tests
 * There are no integration tests
 * There are basically no automated tests of any nature  
