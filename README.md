@@ -6,6 +6,7 @@ It might even calculate a shopping list for you and let you collaborate on meal 
 This project isn't really anything serious - it exists largely for the author to learn Golang.
 
 # Getting Started
+## Building and Running
 * Install Go
 * Clone the project into
 ```
@@ -13,8 +14,41 @@ $GOPATH/src/github.com/jjmschofield/GoCook
 ```
 * Run
 ```
+$ cd $GOPATH/src/github.com/jjmschofield/GoCook
 $ go run main.go
 ```
+
+## Setting Up The Database
+GoCook makes use of Postgres for persistent storage, with database migrations executed by `github.com/golang-migrate/migrate`
+
+* Install Postgres
+* Create a database called `gocook`
+* Run database migrations
+
+### Running Database Migrations 
+* Grab [pre-built CLI](https://github.com/golang-migrate/migrate/releases) for migrate based on your architecture (see )
+```
+$ cd db
+$ curl -L <pre-built binary> | tar xvz
+```
+* Run the migrations
+```
+$ migrate -database postgres://<user>:<password>@localhost:5432/gocook?sslmode=disable --path migrations up
+```
+
+#### Notes
+* For windows you need build version 17063 or greater to get easy curl/tar 
+* You'll also need run a few more commands due to the lack of support for pipes:
+```
+$ cd db
+$ curl -L https://github.com/golang-migrate/migrate/releases/download/v3.4.0/migrate.windows-amd64.exe.tar.gz > migrate.tar.gz
+$ tar -xvz -f migrate.tar.gz
+$ mv migrate.windows-amd64.exe migrate.exe
+$ rm migrate.tar.gz
+```
+* If you prefer just download the file manually and unpack with 7zip or similar
+
+
 
 # Deployment
 This project publishes to http://go-cook.herokuapp.com/ on each push to the master branch.

@@ -1,3 +1,6 @@
+db/migrate
+db/migrate.exe
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
