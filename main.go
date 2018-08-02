@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/jjmschofield/GoCook/common/config"
+	"github.com/jjmschofield/GoCook/common/db"
 	"github.com/jjmschofield/GoCook/api"
 	"flag"
-	"github.com/jjmschofield/GoCook/db"
 )
 
 type cliArgs struct {
