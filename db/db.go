@@ -32,3 +32,7 @@ func ConnectDb(connStr string){
 func IsConnected() error{
 	return dbPool.Ping()
 }
+
+func GetConnection() *sql.DB{
+	return dbPool
+}

@@ -48,8 +48,6 @@ $ rm migrate.tar.gz
 ```
 * If you prefer just download the file manually and unpack with 7zip or similar
 
-
-
 # Deployment
 This project publishes to http://go-cook.herokuapp.com/ on each push to the master branch.
 
@@ -102,6 +100,31 @@ Unfortunately the current stable version (3.2.0) of the library has poor example
   * `aud` is validated to be whatever is set in the config
   
 Don't worry, you get all of this for free when calling `IsAuthenticatedMiddleware`.  
+
+# Database
+Presently the project is setup to use Postgres as a data store. 
+
+Database management is carried out through database migration files (`github.com/golang-migrate/migrate`) allowing for traceability of changes and super fast provisioning of new stores.
+
+## Design Considerations
+* Timestamps are stored without timezones and in UTC
+  * This avoids a lot of pain
+  * If you need to record
+
+## Creating a Migration
+* Get the executable `migrate` for your platform into `db/` (there are instructions under Getting Started)
+* Create a migration:
+```
+$ cd db
+$ migrate create --ext .sql --dir migrations <name>
+``` 
+* Add the changes you want in `db/migrations/<date/time>_<name>.up.sql`
+* Add the back out in `db/migrations/<date/time>_<name>.down.sql`
+* A few rules to keep you safe
+  * **Do** Use transactions  
+  * **Do** test your backout
+  * **Don't** modify existing migrations - always create a new one
+ 
 
 # What It Does right Now
 * A restful API using `gin-gonic/gin`
