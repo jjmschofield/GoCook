@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/jjmschofield/GoCook/config"
-	"github.com/jjmschofield/GoCook/server"
+	"github.com/jjmschofield/GoCook/common/config"
+	"github.com/jjmschofield/GoCook/api"
 	"flag"
 	"github.com/jjmschofield/GoCook/db"
 )
@@ -19,7 +19,7 @@ func main() {
 
 	db.ConnectDb(args.db)
 
-	server.Start(args.port)
+	api.Start(args.port)
 }
 
 func getCommandLineArgs() cliArgs {

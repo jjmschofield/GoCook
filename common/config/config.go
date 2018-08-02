@@ -9,7 +9,7 @@ func LoadNonSensitiveConfig(){
 	setDefaultConfig()
 
 	viper.SetConfigName("cook")
-	viper.AddConfigPath("./config")
+	viper.AddConfigPath("./")
 
 	err := viper.ReadInConfig() // Find and read the config file
 	if err != nil { // Handle errors reading the config file

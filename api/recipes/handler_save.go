@@ -2,8 +2,8 @@ package recipes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jjmschofield/GoCook/utils/respond"
-	"github.com/jjmschofield/GoCook/utils/validate"
+	"github.com/jjmschofield/GoCook/common/respond"
+	"github.com/jjmschofield/GoCook/common/validate"
 )
 
 type saveRequestBody struct {

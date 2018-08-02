@@ -1,4 +1,4 @@
-package server
+package api
 
 import (
 	"github.com/gin-gonic/gin"
@@ -9,7 +9,7 @@ import (
 func Start(port string){
 	router := gin.Default()
 
-	router.LoadHTMLGlob("public/*")
+	router.LoadHTMLGlob("api/public/*")
 
 	router.GET("", rootHandler)
 	ping.AddApiRoutes(router)

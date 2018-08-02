@@ -1,5 +1,5 @@
-db/migrate
-db/migrate.exe
+sql/migrate
+sql/migrate.exe
 
 # Windows image file caches
 Thumbs.db
