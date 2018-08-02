@@ -16,3 +16,10 @@ func BadRequest (context *gin.Context, message string){
 func NotFound(context *gin.Context){
 	context.Status(404)
 }
+
+func InternalError(context *gin.Context, message string){
+	jsonPayload := gin.H{
+		"error": message,
+	}
+	context.JSON(500, jsonPayload)
+}
