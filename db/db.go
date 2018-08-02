@@ -6,7 +6,7 @@ import (
 	"log"
 )
 
-var db *sql.DB
+var dbPool *sql.DB
 
 func ConnectDb(connStr string){
 	db, err := sql.Open(
@@ -17,14 +17,18 @@ func ConnectDb(connStr string){
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer db.Close()
+
+	dbPool = db
+
+	dbPool.SetMaxOpenConns(20)
+
+	conErr := IsConnected()
+
+	if conErr != nil{
+		log.Fatal(conErr)
+	}
 }
 
-func GetConnection() *sql.DB{
-
-	if db == nil{
-		panic("Database is not connected")
-	}
-
-	return db
+func IsConnected() error{
+	return dbPool.Ping()
 }
