@@ -41,7 +41,7 @@ Authentication will validate that a user has a valid session and should have acc
 Switching to an alternate token issuer / IdP shouldn't be too much of a problem should you need to. Just configure the issuer, audience and JWKS endpoint in `cook.json` (don't worry, you can publically share this information). 
 
 ## Authenticating an API endpoint
-`security/auth` offers up `IsAuthenticatedMiddleware`. Use it as middleware on any endpoint or router that you want to force a valid user session for.
+`common/auth` offers up `IsAuthenticatedMiddleware`. Use it as middleware on any endpoint or router that you want to force a valid user session for.
 
 ## JWTs and JWKS and RSA256 oh my!
 The most popular JWT library on GitHub has been used to parse JWTs namely `github.com/dgrijalva/jwt-go`
