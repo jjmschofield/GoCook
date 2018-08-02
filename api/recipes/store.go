@@ -33,7 +33,7 @@ func SaveToStore(recipe Recipe) (saved Recipe, err error) {
 	if recipe.Id == "" {
 		return saveNewRecipe(recipe)
 	}
-
+	
 	store[recipe.Id] = recipe
 	return recipe, nil
 }

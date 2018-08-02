@@ -4,8 +4,8 @@ CREATE FUNCTION recipes.save_new_recipe(newId uuid, newData json)
 RETURNS TABLE(
         id uuid,
         data jsonb,
-		created_at TIMESTAMP,
-		updated_at TIMESTAMP
+        created_at TIMESTAMP,
+        updated_at TIMESTAMP
     )
 AS $$
 BEGIN

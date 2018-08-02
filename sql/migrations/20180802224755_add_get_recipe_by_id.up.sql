@@ -4,8 +4,8 @@ CREATE FUNCTION recipes.get_recipe_by_id(requested_id uuid)
 RETURNS TABLE(
         id uuid,
         data jsonb,
-		created_at TIMESTAMP,
-		updated_at TIMESTAMP
+        created_at TIMESTAMP,
+        updated_at TIMESTAMP
     )
 AS $$
 BEGIN
