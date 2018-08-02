@@ -34,7 +34,7 @@ If you want to replicate this, simply fork this repo and point a heroku app and 
 The project currently makes use of `github.com/gin-gonic/gin` as an API framework, picked largely as it is very minimalist which provides a good learning opportunity for the author.
 
 # Authentication
-GoCook uses OAuth 2.0, provided at the moment from Auth0 - `security/auth` is the package which you are looking for.
+GoCook uses OAuth 2.0, provided at the moment from Auth0 - `common/auth` is the package which you are looking for.
 
 Authentication will validate that a user has a valid session and should have access to the API by using JWT signed with a RSA256 private key.
 
@@ -154,9 +154,9 @@ $ migrate create --ext .sql --dir migrations <name>
   * Everyone likes JWTs
   * Unsupported functionality has been added to support Auth0 (probably works for Okta too)
   * The above is made available as middleware for gin  
-* An abstraction of `http` in `net/jsonhttp`
+* An abstraction of `http` in `common/jsonhttp`
   * Making API requests in golang seems to have a fair old chunk of boiler plate
-  * `net/jsonhttp` wraps `http` and abstracts the following:
+  * `common/jsonhttp` wraps `http` and abstracts the following:
     * Makes the request (with a sensible timeout)
     * Reads the body into []byte
     * Binds the bodies []byte to a struct
