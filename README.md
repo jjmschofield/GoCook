@@ -23,52 +23,12 @@ GoCook makes use of Postgres for persistent storage, with database migrations ex
 
 * Install Postgres
 * Create a database called `gocook`
-* Run database migrations
-
-### Running Database Migrations 
-* Grab the [pre-built CLI](https://github.com/golang-migrate/migrate/releases) for migrate based on your architecture
-```
-$ cd db
-$ curl -L <pre-built binary> | tar xvz
-```
-* Run the migrations
-```
-$ migrate -database postgres://<user>:<password>@localhost:5432/gocook?sslmode=disable --path migrations up
-```
-
-#### Notes
-* For windows you need build version 17063 or greater to get easy curl/tar 
-* You'll also need run a few more commands due to the lack of support for pipes:
-```
-$ cd db
-$ curl -L https://github.com/golang-migrate/migrate/releases/download/v3.4.0/migrate.windows-amd64.exe.tar.gz > migrate.tar.gz
-$ tar -xvz -f migrate.tar.gz
-$ mv migrate.windows-amd64.exe migrate.exe
-$ rm migrate.tar.gz
-```
-* If you prefer just download the file manually and unpack with 7zip or similar
+* Run the database migrations (more on this later)
 
 # Deployment
 This project publishes to http://go-cook.herokuapp.com/ on each push to the master branch.
 
 If you want to replicate this, simply fork this repo and point a heroku app and pipeline to your fork. Alternatively use the CLI as described in https://devcenter.heroku.com/articles/deploying-go
-
-# Configuration
-Configuration is provided through the popular `github.com/spf13/viper` package.
-
-To add a config value - simply add it to `cook.json`.
-
-To use a config value, simply use the interface supplied by viper eg: `viper.GetString(<your config key>)`
-
-Presently only non-secure configuration values are supported - don't go adding secrets to `cook.json` unless you would like to share them with everyone on GitHub.
-
-At deploy time you will want to copy `cook.json` or create a specific one in a `config/` directory relative to the `main.exe` eg:
-
-```
-config/
-- cook.json
-main.exe
-```
 
 # API Framework
 The project currently makes use of `github.com/gin-gonic/gin` as an API framework, picked largely as it is very minimalist which provides a good learning opportunity for the author.
@@ -101,35 +61,96 @@ Unfortunately the current stable version (3.2.0) of the library has poor example
   
 Don't worry, you get all of this for free when calling `IsAuthenticatedMiddleware`.  
 
+# Configuration
+Configuration is provided through the popular `github.com/spf13/viper` package.
+
+To add a config value - simply add it to `cook.json`.
+
+To use a config value, simply use the interface supplied by viper eg: `viper.GetString(<your config key>)`
+
+Presently only non-secure configuration values are supported - don't go adding secrets to `cook.json` unless you would like to share them with everyone on GitHub.
+
+At deploy time you will want to copy `cook.json` or create a specific one in a `config/` directory relative to the `main.exe` eg:
+
+```
+config/
+- cook.json
+main.exe
+```
+
+## Secrets
+Secrets are expected to be provided as params on the CLI. 
+
+This is a simple solution which will be exchanged for either encrypting the strings with a cert, KWS/Key Vault in the future.
+
 # Database
 Presently the project is setup to use Postgres as a data store. 
 
 Database management is carried out through database migration files (`github.com/golang-migrate/migrate`) allowing for traceability of changes and super fast provisioning of new stores.
 
-## Design Considerations
-* Timestamps are stored without timezones and in UTC
-  * This avoids a lot of pain
-  * If you need to record
-
-## Creating a Migration
-* Get the executable `migrate` for your platform into `db/` (there are instructions under Getting Started)
-* Create a migration:
+## Running Database Migrations 
+* Grab the [pre-built CLI](https://github.com/golang-migrate/migrate/releases) for migrate based on your architecture
 ```
 $ cd db
+$ curl -L <pre-built binary> | tar xvz
+```
+* Run `up` to go forward
+```
+$ migrate -database postgres://<user>:<password>@localhost:5432/gocook?sslmode=disable --path migrations up
+```
+* If you want too, `down` to go back
+```
+$ migrate -database postgres://<user>:<password>@localhost:5432/gocook?sslmode=disable --path migrations down
+```
+
+### Notes
+* For windows you need build version 17063 or greater to get easy curl/tar 
+* You'll also need run a few more commands due to the lack of support for pipes:
+```
+$ cd sql
+$ curl -L https://github.com/golang-migrate/migrate/releases/download/v3.4.0/migrate.windows-amd64.exe.tar.gz > migrate.tar.gz
+$ tar -xvz -f migrate.tar.gz
+$ mv migrate.windows-amd64.exe migrate.exe
+$ rm migrate.tar.gz
+```
+* If you prefer just download the file manually and unpack with 7zip or similar
+
+## Creating a Migration
+* Create a migration:
+```
+$ cd sql
 $ migrate create --ext .sql --dir migrations <name>
 ``` 
-* Add the changes you want in `db/migrations/<date/time>_<name>.up.sql`
-* Add the back out in `db/migrations/<date/time>_<name>.down.sql`
+* Add the changes you want in `sql/migrations/<date/time>_<name>.up.sql`
+* Add the back out in `sql/migrations/<date/time>_<name>.down.sql`
 * A few rules to keep you safe
   * **Do** Use transactions  
   * **Do** test your backout
   * **Don't** modify existing migrations - always create a new one
  
-
+ ## Design Notes
+ * We are not using an ORM (though `gorm` looks great)
+   * Highly contentious but there are reasons...
+   * We take complete control of database migrations
+   * We take complete control of the database arch and capabilities
+   * We hopefully get a performance boost (we can definitely profile database performance a bit more easily) 
+   * We do loose quite a lot of development speed (but some other considerations counter this)
+   * We unlock the next point...
+ * We don't write SQL in application code - stored procedures all the way
+   * We push all storage related logic out of the application, effectively turning postgres into its own kind of API 
+   * We get a security boost against injections (but we still need to validate inputs!)
+   * We unlock a more sophisticated permissions model (access can be granted to procedures, not just dbs/schemas/tables)
+   * We hopefully get a performance boost
+   * We can test these using `pgTap`
+ * We treat Postgres as a schemaless store with super powers
+   * We make heavy use of JSONB columns
+   * This allows us to get schemaless models (in a NoSQL kind of way) but retain all the goodness of a relational store 
+ * All these points also serve as a really good learning exercise for the author, especially if it needs to change later :)
 # What It Does right Now
 * A restful API using `gin-gonic/gin`
-  * An attempt at creating a domain orientated project structure, where each logical domain provides its own router and store (handy for splitting the project up in the future when it really takes of, is worth millions and needs to be split into a microservices architecture)
-* The start of authentication using oAuth 2 as gin middleware
+  * Endpoints for CRUD on basic recipe models  
+  * `recipe` package should be splittable 
+* JWT based authentication using OAuth2 as gin middleware
   * Everyone likes JWTs
   * Unsupported functionality has been added to support Auth0 (probably works for Okta too)
   * The above is made available as middleware for gin  
@@ -144,6 +165,7 @@ $ migrate create --ext .sql --dir migrations <name>
 ```
 error := jsonHttp.Get(url, &structToBind);
 ```
+ 
 
 # Endpoints
 ```
