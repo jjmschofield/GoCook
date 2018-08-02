@@ -1,1 +1,1 @@
-web: GoCook --port $PORT
+web: GoCook --port $PORT --db $DB_CONNECTION
