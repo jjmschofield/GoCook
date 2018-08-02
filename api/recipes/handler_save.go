@@ -27,7 +27,12 @@ func saveRequestHandler(context *gin.Context) {
 		return
 	}
 
-	savedRecipe := SaveToStore(requestBody.Recipe)
+	savedRecipe, storeErr := SaveToStore(requestBody.Recipe)
+
+	if storeErr != nil{
+		respond.InternalError(context, "Failed writing to store")
+	}
+
 	respond.Ok(context, createSaveResponsePayload(savedRecipe))
 }
 

@@ -13,15 +13,18 @@ func getByIdRequestHandler(context *gin.Context) {
 
 	if !validRequest {
 		respond.BadRequest(context, validationError)
+		return
 	}
 
-	recipe, found := GetFromStoreById(id)
+	recipe, storeErr := GetFromStoreById(id)
 
-	if found {
-		respond.Ok(context, createGetByIdResponsePayload(recipe))
-	} else {
+	if storeErr != nil {
 		respond.NotFound(context)
+		return
 	}
+
+	respond.Ok(context, createGetByIdResponsePayload(recipe))
+
 }
 
 func isValidGetByIdRequest(id string) (isValid bool, validationMessage string) {
