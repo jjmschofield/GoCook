@@ -5,12 +5,11 @@ import (
 	"github.com/jjmschofield/GoCook/common/db"
 	"encoding/json"
 	"errors"
+	"database/sql"
 )
 
-var store = make(map[string]Recipe)
-
-func GetAllFromStore() map[string]Recipe {
-	return store
+func GetAllFromStore() (recipes map[string]Recipe, err error) {
+	return multiRecipeQuery("SELECT data FROM recipes.get_all_recipes()")
 }
 
 func GetFromStoreById(id string) (Recipe, error) {
@@ -32,10 +31,9 @@ func GetFromStoreById(id string) (Recipe, error) {
 func SaveToStore(recipe Recipe) (saved Recipe, err error) {
 	if recipe.Id == "" {
 		return saveNewRecipe(recipe)
+	} else {
+		return updateRecipe(recipe)
 	}
-	
-	store[recipe.Id] = recipe
-	return recipe, nil
 }
 
 func saveNewRecipe(recipe Recipe) (result Recipe, err error) {
@@ -48,7 +46,15 @@ func saveNewRecipe(recipe Recipe) (result Recipe, err error) {
 	return singleRecipeQuery(query)
 }
 
-// TODO - this should be generalized and abstracted down into the DB package
+func updateRecipe(recipe Recipe) (result Recipe, err error) {
+	recipeJson, err := json.Marshal(recipe)
+
+	query := "SELECT data from recipes.save_recipe('" + recipe.Id + "','" + string(recipeJson) + "')"
+
+	return singleRecipeQuery(query)
+}
+
+// TODO - after this line should be generalized and abstracted down into the DB package
 func singleRecipeQuery(query string) (recipe Recipe, err error) {
 	var recipeJson []byte
 
@@ -62,4 +68,43 @@ func singleRecipeQuery(query string) (recipe Recipe, err error) {
 	jsonErr := json.Unmarshal(recipeJson, &storeRecipe)
 
 	return storeRecipe, jsonErr
+}
+
+func multiRecipeQuery(query string) (recipes map[string]Recipe, queryErr error) {
+	rows, queryErr := db.GetConnection().Query(query)
+
+	if queryErr != nil {
+		return nil, queryErr
+	}
+
+	defer rows.Close()
+
+	return getAllRecipesFromRows(rows)
+}
+
+func getAllRecipesFromRows(rows *sql.Rows) (recipes map[string]Recipe, err error){
+	storeRecipes := make(map[string]Recipe)
+
+	for rows.Next() {
+
+		var recipeJson []byte
+
+		scanErr := rows.Scan(&recipeJson)
+		if scanErr != nil {
+			return nil, scanErr
+		}
+
+		var storeRecipe Recipe
+		jsonErr := json.Unmarshal(recipeJson, &storeRecipe)
+
+		if jsonErr != nil{
+			return nil, jsonErr
+		}
+
+		storeRecipes[storeRecipe.Id] = storeRecipe
+	}
+
+	rowsErr := rows.Err()
+
+	return storeRecipes, rowsErr
 }

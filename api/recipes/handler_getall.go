@@ -2,14 +2,21 @@ package recipes
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/jjmschofield/GoCook/common/respond"
 )
 
 func getAllRequestHandler(context *gin.Context) {
 
-	allRecipes := GetAllFromStore()
+	recipes, err := GetAllFromStore()
+
+	if err != nil{
+		respond.InternalError(context,"Couldn't retrieve recipes")
+		return
+	}
 
 	responsePayload := gin.H{
-		"recipes": allRecipes,
-	};
-	context.JSON(200, responsePayload)
+		"recipes": recipes,
+	}
+
+	respond.Ok(context, responsePayload)
 }

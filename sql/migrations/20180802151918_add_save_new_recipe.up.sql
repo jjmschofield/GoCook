@@ -1,6 +1,6 @@
 BEGIN;
 
-CREATE FUNCTION recipes.get_recipe_by_id(requested_id uuid)
+CREATE FUNCTION recipes.save_new_recipe(new_id uuid, new_data json)
 RETURNS TABLE(
         id uuid,
         data jsonb,
@@ -9,14 +9,15 @@ RETURNS TABLE(
     )
 AS $$
 BEGIN
-	RETURN QUERY
-    SELECT
+	INSERT INTO recipes.recipes VALUES (new_id, new_data);
+    RETURN QUERY
+		SELECT
       recipes.recipes.id,
       recipes.recipes.data,
       recipes.recipes.created_at,
       recipes.recipes.updated_at
     FROM recipes.recipes
-    WHERE recipes.recipes.id = requested_id;
+		WHERE recipes.recipes.id = new_id;
 END;
 $$ LANGUAGE plpgsql;
 
