@@ -15,7 +15,7 @@ func AddApiRoutes(router *gin.Engine) *gin.Engine {
 }
 
 func addMiddleware(group *gin.RouterGroup) *gin.RouterGroup {
-	group.Use(auth.IsAuthenticatedMiddleware)
+	group.Use(auth.AuthenticationMiddleware)
 	return group
 }
 

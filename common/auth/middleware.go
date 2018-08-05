@@ -2,7 +2,7 @@ package auth
 
 import "github.com/gin-gonic/gin"
 
-func IsAuthenticatedMiddleware(context *gin.Context){
+func AuthenticationMiddleware(context *gin.Context){
 	jwtToken, tokenError := getJwtToken(context)
 
 	if tokenError != nil {
@@ -16,6 +16,9 @@ func IsAuthenticatedMiddleware(context *gin.Context){
 		context.AbortWithError(401, validationError)
 		return
 	}
+
+	context.Set("token", jwtToken)
+	context.Set("userId", GetClaim(jwtToken,"sub"))
 
 	context.Next()
 }

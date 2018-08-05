@@ -7,6 +7,10 @@ import (
 	"github.com/spf13/viper"
 )
 
+func GetClaim(token *jwt.Token, claim string) string{
+	return token.Claims.(jwt.MapClaims)[claim].(string)
+}
+
 func hasValidClaims(token *jwt.Token) (bool, error){
 
 	invalidExp, expError := hasExpired(token)
