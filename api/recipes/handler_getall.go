@@ -7,7 +7,7 @@ import (
 
 func getAllRequestHandler(context *gin.Context) {
 
-	recipes, err := GetAllFromStore()
+	recipes, err := GetAllFromStore(context.MustGet("userId").(string))
 
 	if err != nil{
 		respond.InternalError(context,"Couldn't retrieve recipes")

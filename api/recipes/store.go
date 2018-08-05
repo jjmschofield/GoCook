@@ -8,12 +8,12 @@ import (
 	"database/sql"
 )
 
-func GetAllFromStore() (recipes map[string]Recipe, err error) {
-	return multiRecipeQuery("SELECT data FROM recipes.get_all_recipes()")
+func GetAllFromStore(userId string) (recipes map[string]Recipe, err error) {
+	return multiRecipeQuery("SELECT data FROM recipes.get_all_recipes('" + userId + "')")
 }
 
-func GetFromStoreById(id string) (Recipe, error) {
-	query := "SELECT data from recipes.get_recipe_by_id('" + id + "')"
+func GetFromStoreById(id string, userId string) (Recipe, error) {
+	query := "SELECT data from recipes.get_recipe_by_id('" + id + "','"+ userId+ "')"
 
 	recipe, err := singleRecipeQuery(query)
 
@@ -28,15 +28,16 @@ func GetFromStoreById(id string) (Recipe, error) {
 	return recipe, nil
 }
 
-func SaveToStore(recipe Recipe) (saved Recipe, err error) {
+func SaveToStore(recipe Recipe, userId string) (saved Recipe, err error) {
 	if recipe.Id == "" {
-		return saveNewRecipe(recipe)
+		return saveNewRecipe(recipe, userId)
 	} else {
-		return updateRecipe(recipe)
+		return updateRecipe(recipe, userId)
 	}
 }
 
-func saveNewRecipe(recipe Recipe) (result Recipe, err error) {
+func saveNewRecipe(recipe Recipe, owner string) (result Recipe, err error) {
+	recipe.Owner = owner
 	recipe.Id = uuid.Must(uuid.NewV4()).String()
 
 	recipeJson, err := json.Marshal(recipe)
@@ -46,12 +47,23 @@ func saveNewRecipe(recipe Recipe) (result Recipe, err error) {
 	return singleRecipeQuery(query)
 }
 
-func updateRecipe(recipe Recipe) (result Recipe, err error) {
+func updateRecipe(recipe Recipe, userId string) (result Recipe, err error) {
+	// TODO - this should make it easier to determine an error as a query error or a permissions error
+
 	recipeJson, err := json.Marshal(recipe)
 
-	query := "SELECT data from recipes.save_recipe('" + recipe.Id + "','" + string(recipeJson) + "')"
+	query := "SELECT data from recipes.save_recipe('" +
+		recipe.Id + "','" +
+		string(recipeJson) + "','" +
+		userId + "')"
 
-	return singleRecipeQuery(query)
+	updatedRecipe, dbErr := singleRecipeQuery(query)
+
+	if updatedRecipe.Id != recipe.Id {
+		return Recipe{}, errors.New("recipe could not be saved")
+	}
+
+	return updatedRecipe, dbErr
 }
 
 // TODO - after this line should be generalized and abstracted down into the DB package

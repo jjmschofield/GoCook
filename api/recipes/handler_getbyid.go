@@ -16,7 +16,7 @@ func getByIdRequestHandler(context *gin.Context) {
 		return
 	}
 
-	recipe, storeErr := GetFromStoreById(id)
+	recipe, storeErr := GetFromStoreById(id, context.MustGet("userId").(string))
 
 	if storeErr != nil {
 		respond.NotFound(context)

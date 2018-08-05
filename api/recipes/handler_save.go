@@ -11,6 +11,8 @@ type saveRequestBody struct {
 }
 
 func saveRequestHandler(context *gin.Context) {
+	// TODO - the upsert style here is making this quite a long method
+	// TODO - and more is needed to support sending a 403 when trying to update a record you don't have access too
 	var requestBody saveRequestBody
 
 	bindError := context.Bind(&requestBody)
@@ -27,10 +29,11 @@ func saveRequestHandler(context *gin.Context) {
 		return
 	}
 
-	savedRecipe, storeErr := SaveToStore(requestBody.Recipe)
+	savedRecipe, storeErr := SaveToStore(requestBody.Recipe, context.MustGet("userId").(string))
 
 	if storeErr != nil{
 		respond.InternalError(context, "Failed writing to store")
+		return
 	}
 
 	respond.Ok(context, createSaveResponsePayload(savedRecipe))

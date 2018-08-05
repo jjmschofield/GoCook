@@ -9,8 +9,13 @@ RETURNS TABLE(
     )
 AS $$
 BEGIN
-	INSERT INTO recipes.recipes VALUES (new_id, new_data);
-    RETURN QUERY
+	INSERT INTO recipes.recipes
+	  VALUES (
+	    new_id,
+	    new_data,
+	    new_data->>'owner'
+	    );
+  RETURN QUERY
 		SELECT
       recipes.recipes.id,
       recipes.recipes.data,
