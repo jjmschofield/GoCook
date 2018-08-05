@@ -11,5 +11,4 @@ echo "Getting github.com/golang-migrate/migrate binary..."
 curl -L https://github.com/golang-migrate/migrate/releases/download/v3.4.0/migrate.linux-amd64.tar.gz | tar xvz
 
 echo "Running migrations..."
-ls
-migrate -database $DB_CONNECTION --path sql/migrations up
+./migrate.linux-amd64 -database $DB_CONNECTION --path sql/migrations up
