@@ -7,7 +7,7 @@ import (
 )
 
 // @Summary Get Recipe by Id
-// @Description Gets a recipe by ID which the caller has access too
+// @Description Gets a recipe by ID which the caller has access to.
 // @Security OAuth2Implicit
 // @Tags Recipes
 // @Accept json

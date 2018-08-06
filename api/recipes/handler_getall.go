@@ -6,7 +6,7 @@ import (
 )
 
 // @Summary Get All Recipes
-// @Description Gets all recipes which the caller has access too
+// @Description Gets all recipes which the caller has access to, note pagination is not implemented yet.
 // @Security OAuth2Implicit
 // @Tags Recipes
 // @Accept json
