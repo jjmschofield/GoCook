@@ -1,7 +1,6 @@
 package recipes
 
 type Recipe struct {
-	// TODO - strings require sanitization
 	Id           string       `json:"id" validate:"omitempty,uuid4"`
 	Name         string       `json:"name" binding:"required" validate:"required,min=3,max=50"`
 	Description  string       `json:"description" validate:"omitempty,min=0,max=2000"`

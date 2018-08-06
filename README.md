@@ -28,7 +28,15 @@ GoCook makes use of Postgres for persistent storage, with database migrations ex
 # Deployment
 This project publishes to http://go-cook.herokuapp.com/ on each push to the master branch.
 
-If you want to replicate this, simply fork this repo and point a heroku app and pipeline to your fork. Alternatively use the CLI as described in https://devcenter.heroku.com/articles/deploying-go
+If you want to replicate this, simply fork this repo and point a Heroku app and pipeline to your fork. Alternatively use the CLI as described in https://devcenter.heroku.com/articles/deploying-go
+
+Note: this isn't presently running via https in production - an SSL cert needs to be applied via Heroku
+
+# Documentation
+Swagger Documentation for the endpoints can be found at the following URLs:
+* [UI](http://go-cook.herokuapp.com/swagger)
+* [JSON](http://go-cook.herokuapp.com/swagger/swagger.json)
+* [YAML](http://go-cook.herokuapp.com/swagger/swagger.yaml)
 
 # API Framework
 The project currently makes use of `github.com/gin-gonic/gin` as an API framework, picked largely as it is very minimalist which provides a good learning opportunity for the author.
@@ -168,23 +176,6 @@ $ migrate create --ext .sql --dir migrations <name>
 error := jsonHttp.Get(url, &structToBind);
 ```
  
-
-# Endpoints
-```
-    GET: /ping <- replies pong
-    
-    GET: /recipes <- returns all recipes in memory
-    GET: /recipes/:id <- returns one recipe
-    POST: /recipes <- store or update a recipe in memory
-    {
-    	"recipe": {
-    		"id": null <- provide null to store a new recipe, a UUIDv4 to update one
-    		"name": "my amazing recipe"
-    		"url": "http://some.recipes.com/amazing"
-    	} 	
-    }
-```  
-
 # Things to Watch Out For
 * This has been authored on a Winblowz box
   * I've not checked that the .gitattributes is correct yet - so watch your line endings!
@@ -192,6 +183,13 @@ error := jsonHttp.Get(url, &structToBind);
 * There are no integration tests
 * There are basically no automated tests of any nature  
 * There are probably many Golang antipatterns or GOTCHYAs I've not found yet
+* The package used to generate swagger docs `github.com/swaggo/swag/cmd/swag` has some limitations:
+  * It must be run manually to regenerate the docs
+  * You can't configure the target dir
+  * It doesn't seem to support all of the OpenAPI schema correctly
+  * The main documentation for the API must go in main.go
+  * It doesn't seem to support multiline descriptions
+  * `go-swagger` may be a better option here
 
 # Now GoCook!
 ![alt Silly Gif](https://thumbs.gfycat.com/WarlikeQuarrelsomeBuck-max-1mb.gif)

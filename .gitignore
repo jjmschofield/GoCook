@@ -1,5 +1,6 @@
 sql/migrate
 sql/migrate.exe
+docs/docs.go
 
 # Windows image file caches
 Thumbs.db

@@ -5,6 +5,16 @@ import (
 	"github.com/jjmschofield/GoCook/common/respond"
 )
 
+// @Summary Get All Recipes
+// @Description Gets all recipes which the caller has access too
+// @Security OAuth2Implicit
+// @Tags Recipes
+// @Accept json
+// @Produce json
+// @Success 200 {array} recipes.Recipe
+// @Failure 400 {object} respond.ErrorPayload
+// @Failure 404 {object} respond.ErrorPayload
+// @Router /recipes [get]
 func getAllRequestHandler(context *gin.Context) {
 
 	recipes, err := GetAllFromStore(context.MustGet("userId").(string))
@@ -14,9 +24,5 @@ func getAllRequestHandler(context *gin.Context) {
 		return
 	}
 
-	responsePayload := gin.H{
-		"recipes": recipes,
-	}
-
-	respond.Ok(context, responsePayload)
+	respond.Ok(context, recipes)
 }
