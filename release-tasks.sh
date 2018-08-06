@@ -14,13 +14,13 @@ echo "Running migrations..."
 ./migrate.linux-amd64 -database $DB_CONNECTION --path sql/migrations up
 
 ## Documentation
-echo "Gettiing go-swagger binary..."
-curl -L https://github.com/go-swagger/go-swagger/releases/download/0.15.0/swagger_linux_amd64 > swagger
-chmod +x swagger
-ls -al
+echo "Skipping swagger generation as go-swagger cannot resolve packages using Godep on Heroku..."
+# echo "Getting go-swagger binary..."
+# curl -L https://github.com/go-swagger/go-swagger/releases/download/0.15.0/swagger_linux_amd64 > swagger
+# chmod +x swagger
 
-echo "Regenerating swagger documents..."
-./swagger generate spec -o api/public/swagger.json
+# echo "Regenerating swagger documents..."
+# ./swagger generate spec -o api/public/swagger.json
 
 ## Complete
 echo "Release preparation complete!"
