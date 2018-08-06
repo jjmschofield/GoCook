@@ -6,17 +6,26 @@ import (
 	"github.com/jjmschofield/GoCook/common/validate"
 )
 
-// @Summary Save Recipe
-// @Description Saves a new recipe (when Id is null) or updates a recipe (when id is populated, valid and owned by the caller)
-// @Security OAuth2Implicit
-// @Tags Recipes
-// @Accept json
-// @Produce json
-// @Param recipe body recipes.Recipe true "The recipe to save"
-// @Success 200 {object} recipes.Recipe "The saved recipe - may include mutations, eg generated IDs"
-// @Failure 400 {object} respond.ErrorPayload
-// @Failure 500 {object} respond.ErrorPayload
-// @Router /recipes [post]
+// swagger:route POST /recipes{id} Recipes UpsertRecipe
+//
+// Save Recipe
+//
+// Carries out an upsert on a recipe.
+//
+// When recipe id is null, a new recipe is created. When it is populated the recipe is updated (if the caller has access)
+//
+//     Consumes:
+//     - application/json
+//
+//     Produces:
+//     - application/json
+//
+//     Schemes: http
+//
+//     Responses:
+//       200: Recipe
+//		 400: MessagePayload
+//       500: ErrorPayload
 func saveRequestHandler(context *gin.Context) {
 	// TODO - the upsert style here is making this quite a long method
 	// TODO - and more is needed to support sending a 403 when trying to update a record you don't have access too

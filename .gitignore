@@ -1,6 +1,7 @@
 sql/migrate
 sql/migrate.exe
-docs/docs.go
+swagger
+swagger.exe
 
 # Windows image file caches
 Thumbs.db

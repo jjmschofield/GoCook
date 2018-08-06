@@ -32,18 +32,3 @@ func getCommandLineArgs() cliArgs {
 		db:   *dbStr,
 	}
 }
-
-// @title GoCook API Reference
-// @version 1.0
-// @description An API for working for collaborating on recipes and sharing meal plans.
-// @termsOfService https://not-implemented.com
-
-// @contact.name API Support
-// @contact.url https://github.com/jjmschofield/GoCook
-
-// @license.name No Licence
-// @license.url https://github.com/jjmschofield/GoCook
-
-// @schemes http
-// @host go-cook.herokuapp.com
-// @BasePath /

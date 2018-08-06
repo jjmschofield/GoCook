@@ -36,7 +36,13 @@ Note: this isn't presently running via https in production - an SSL cert needs t
 Swagger Documentation for the endpoints can be found at the following URLs:
 * [UI](http://go-cook.herokuapp.com/swagger)
 * [JSON](http://go-cook.herokuapp.com/swagger/swagger.json)
-* [YAML](http://go-cook.herokuapp.com/swagger/swagger.yaml)
+
+To refresh the documentation, pull down a binary for `go-swagger` and execute it eg:
+
+```
+$ curl -L https://github.com/go-swagger/go-swagger/releases/download/0.15.0/swagger_windows_amd64.exe > swagger.exe
+$ swagger generate spec -o api/public/swagger.json
+```
 
 # API Framework
 The project currently makes use of `github.com/gin-gonic/gin` as an API framework, picked largely as it is very minimalist which provides a good learning opportunity for the author.
@@ -183,13 +189,6 @@ error := jsonHttp.Get(url, &structToBind);
 * There are no integration tests
 * There are basically no automated tests of any nature  
 * There are probably many Golang antipatterns or GOTCHYAs I've not found yet
-* The package used to generate swagger docs `github.com/swaggo/swag/cmd/swag` has some limitations:
-  * It must be run manually to regenerate the docs
-  * You can't configure the target dir
-  * It doesn't seem to support all of the OpenAPI schema correctly
-  * The main documentation for the API must go in main.go
-  * It doesn't seem to support multiline descriptions
-  * `go-swagger` may be a better option here
 
 # Now GoCook!
 ![alt Silly Gif](https://thumbs.gfycat.com/WarlikeQuarrelsomeBuck-max-1mb.gif)

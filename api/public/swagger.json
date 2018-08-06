@@ -1,0 +1,333 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "# Introduction\nGoCook's aim is to produce a simple way of building meal plans and shopping lists between multiple people.\n\nIt all starts with the your repository of recipes, record the ingredients, steps and urls for each of your favorite dishes and kiss your bookmark list goodbye!\n\nOnce you have a nice collection of meals, its easy to pick what you want to eat each day. The yield of each recipe lets you know where you will have leftovers that you can allocate to a cheeky free lunch.\n\nFrom a meal plan, the next logical step is the generation of a basic shopping list for you, no adds or anything like that - just a simple list to take on your weekly shop.\n\nUltimately the most important part of this project is for the author to learn Golang, so all comments and PR's are welcome over at https://github.com/jjmschofield/GoCook\n\n# Accessing the API\nThis API makes use of OAuth2.0 for authentication and authorization.\n\nAccess to the version hosted on Heroku is not really for the public (this is a personal project) but if you get involved on GitHub and invite can surely be sent!\n\n# Terms Of Service\n\nThere are no TOS at this moment, use at your own risk and we take no responsibility. Note that the api is currently running on http only so everyone can see what you are posting!",
+    "title": "GoCook API Reference.",
+    "contact": {
+      "name": "Jack Schofield",
+      "url": "https://github.com/jjmschofield/GoCook",
+      "email": "jack@no-email-shared.none"
+    },
+    "license": {
+      "name": "None Given",
+      "url": "https://github.com/jjmschofield/GoCook"
+    },
+    "version": "0.0.1"
+  },
+  "host": "go-cook.herokuapp.com",
+  "basePath": "/",
+  "paths": {
+    "/recipes": {
+      "get": {
+        "description": "Lists all recipes with no pagination or filtering(!).\n\nThis will show only those recipes which the caller has been granted access to.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http"
+        ],
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Get All Recipes",
+        "operationId": "GetAllRecipes",
+        "responses": {
+          "200": {
+            "description": "Recipe",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Recipe"
+              }
+            }
+          },
+          "500": {
+            "description": "ErrorPayload",
+            "schema": {
+              "$ref": "#/definitions/ErrorPayload"
+            }
+          }
+        }
+      }
+    },
+    "/recipes{id}": {
+      "get": {
+        "description": "Returns the requested recipe (if the caller has access).\n\nThis will show only those recipes which the caller has been granted access to.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http"
+        ],
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Get Recipe By Id",
+        "operationId": "GetRecipesById",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "ID",
+            "description": "The ID of the recipe",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe",
+            "schema": {
+              "$ref": "#/definitions/Recipe"
+            }
+          },
+          "400": {
+            "description": "MessagePayload",
+            "schema": {
+              "$ref": "#/definitions/MessagePayload"
+            }
+          },
+          "404": {},
+          "500": {
+            "description": "ErrorPayload",
+            "schema": {
+              "$ref": "#/definitions/ErrorPayload"
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Carries out an upsert on a recipe.\n\nWhen recipe id is null, a new recipe is created. When it is populated the recipe is updated (if the caller has access)",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http"
+        ],
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Save Recipe",
+        "operationId": "UpsertRecipe",
+        "parameters": [
+          {
+            "x-go-name": "Recipe",
+            "description": "The pet to submit.",
+            "name": "recipe",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Recipe"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe",
+            "schema": {
+              "$ref": "#/definitions/Recipe"
+            }
+          },
+          "400": {
+            "description": "MessagePayload",
+            "schema": {
+              "$ref": "#/definitions/MessagePayload"
+            }
+          },
+          "500": {
+            "description": "ErrorPayload",
+            "schema": {
+              "$ref": "#/definitions/ErrorPayload"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ErrorPayload": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "x-go-name": "Error"
+        }
+      },
+      "x-go-package": "github.com/jjmschofield/GoCook/common/respond"
+    },
+    "Ingredient": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "x-go-name": "Name"
+        },
+        "qty": {
+          "type": "number",
+          "format": "float",
+          "x-go-name": "Qty"
+        },
+        "unit": {
+          "type": "string",
+          "x-go-name": "Unit"
+        }
+      },
+      "x-go-package": "github.com/jjmschofield/GoCook/api/recipes"
+    },
+    "MessagePayload": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "x-go-name": "Message"
+        }
+      },
+      "x-go-package": "github.com/jjmschofield/GoCook/common/respond"
+    },
+    "Recipe": {
+      "description": "It is a pretty huge model which contains everything you may possibly need to know about a recipe.",
+      "type": "object",
+      "title": "A Recipe is well... a cooking recipe!",
+      "properties": {
+        "contributors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-name": "Contributors"
+        },
+        "description": {
+          "type": "string",
+          "x-go-name": "Description"
+        },
+        "id": {
+          "type": "string",
+          "x-go-name": "Id"
+        },
+        "imgUrl": {
+          "type": "string",
+          "x-go-name": "ImgUrl"
+        },
+        "ingredients": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Ingredient"
+          },
+          "x-go-name": "Ingredients"
+        },
+        "name": {
+          "type": "string",
+          "x-go-name": "Name"
+        },
+        "owner": {
+          "type": "string",
+          "x-go-name": "Owner"
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Step"
+          },
+          "x-go-name": "Steps"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-name": "Tags"
+        },
+        "time": {
+          "$ref": "#/definitions/Time"
+        },
+        "url": {
+          "type": "string",
+          "x-go-name": "Url"
+        },
+        "yield": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Yield"
+        }
+      },
+      "x-go-package": "github.com/jjmschofield/GoCook/api/recipes"
+    },
+    "Step": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "x-go-name": "Description"
+        },
+        "name": {
+          "type": "string",
+          "x-go-name": "Name"
+        },
+        "time": {
+          "$ref": "#/definitions/Time"
+        }
+      },
+      "x-go-package": "github.com/jjmschofield/GoCook/api/recipes"
+    },
+    "Time": {
+      "type": "object",
+      "properties": {
+        "cookSec": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "CookSec"
+        },
+        "prepSec": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "PrepSec"
+        }
+      },
+      "x-go-package": "github.com/jjmschofield/GoCook/api/recipes"
+    }
+  },
+  "responses": {
+    "ErrorResponse": {
+      "schema": {
+        "$ref": "#/definitions/ErrorPayload"
+      },
+      "headers": {
+        "Body": {}
+      }
+    },
+    "MessageResponse": {
+      "schema": {
+        "$ref": "#/definitions/MessagePayload"
+      },
+      "headers": {
+        "Body": {}
+      }
+    },
+    "RecipeResponse": {
+      "schema": {
+        "$ref": "#/definitions/Recipe"
+      },
+      "headers": {
+        "Body": {}
+      }
+    }
+  }
+}

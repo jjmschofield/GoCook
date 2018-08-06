@@ -6,17 +6,27 @@ import (
 	"github.com/jjmschofield/GoCook/common/validate"
 )
 
-// @Summary Get Recipe by Id
-// @Description Gets a recipe by ID which the caller has access to.
-// @Security OAuth2Implicit
-// @Tags Recipes
-// @Accept json
-// @Produce json
-// @Param id path string true "The uuid of the recipe"
-// @Success 200 {object} recipes.Recipe
-// @Failure 400 {object} respond.ErrorPayload
-// @Failure 404 {object} respond.ErrorPayload
-// @Router /recipes/{id} [get]
+// swagger:route GET /recipes{id} Recipes GetRecipesById
+//
+// Get Recipe By Id
+//
+// Returns the requested recipe (if the caller has access).
+//
+// This will show only those recipes which the caller has been granted access to.
+//
+//     Consumes:
+//     - application/json
+//
+//     Produces:
+//     - application/json
+//
+//     Schemes: http
+//
+//     Responses:
+//       200: Recipe
+//		 400: MessagePayload
+//		 404:
+//       500: ErrorPayload
 func getByIdRequestHandler(context *gin.Context) {
 	id := context.Param("id")
 

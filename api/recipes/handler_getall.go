@@ -5,18 +5,26 @@ import (
 	"github.com/jjmschofield/GoCook/common/respond"
 )
 
-// @Summary Get All Recipes
-// @Description Gets all recipes which the caller has access to, note pagination is not implemented yet.
-// @Security OAuth2Implicit
-// @Tags Recipes
-// @Accept json
-// @Produce json
-// @Success 200 {array} recipes.Recipe
-// @Failure 400 {object} respond.ErrorPayload
-// @Failure 404 {object} respond.ErrorPayload
-// @Router /recipes [get]
+// swagger:route GET /recipes Recipes GetAllRecipes
+//
+// Get All Recipes
+//
+// Lists all recipes with no pagination or filtering(!).
+//
+// This will show only those recipes which the caller has been granted access to.
+//
+//     Consumes:
+//     - application/json
+//
+//     Produces:
+//     - application/json
+//
+//     Schemes: http
+//
+//     Responses:
+//       200: []Recipe
+//       500: ErrorPayload
 func getAllRequestHandler(context *gin.Context) {
-
 	recipes, err := GetAllFromStore(context.MustGet("userId").(string))
 
 	if err != nil{

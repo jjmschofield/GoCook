@@ -18,8 +18,7 @@ func addMiddleware(group *gin.RouterGroup) *gin.RouterGroup {
 
 func addRoutes(group *gin.RouterGroup) *gin.RouterGroup {
 	group.GET("", getSwaggerGui)
-	group.StaticFile("/swagger.json", "docs/swagger/swagger.json")
-	group.StaticFile("/swagger.yaml", "docs/swagger/swagger.yaml")
+	group.StaticFile("/swagger.json", "api/public/swagger.json")
 
 	return group
 }
