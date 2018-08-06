@@ -16,7 +16,7 @@ echo "Running migrations..."
 ## Documentation
 echo "Gettiing go-swagger binary..."
 curl -L https://github.com/go-swagger/go-swagger/releases/download/0.15.0/swagger_linux_amd64 > swagger
-ls
+ls -al
 echo "Regenerating swagger documents..."
 ./swagger generate spec -o api/public/swagger.json
 
