@@ -47,8 +47,8 @@ definitions:
       yield:
         type: integer
     required:
-    - name
     - tags
+    - name
     - contributors
     type: object
   recipes.Step:
@@ -92,7 +92,8 @@ paths:
     get:
       consumes:
       - application/json
-      description: Gets all recipes which the caller has access too
+      description: Gets all recipes which the caller has access to, note pagination
+        is not implemented yet.
       produces:
       - application/json
       responses:
@@ -157,7 +158,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Gets a recipe by ID which the caller has access too
+      description: Gets a recipe by ID which the caller has access to.
       parameters:
       - description: The uuid of the recipe
         in: path
