@@ -1,0 +1,81 @@
+{
+    "version": "2.0.0",	
+	"type": "shell",	
+	"echoCommand": true,
+	"cwd": "${workspaceFolder}",
+    "tasks": [
+        {
+            "label": "run",
+            "command": "go run main.go",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$go"
+            ],
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "build",
+            "command": "go build main.go",
+            "group": "build",
+            "problemMatcher": [
+                "$go"
+            ],
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "test",
+            "command": "go test",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "db:migration:up",
+            "command": "sql/migrate -database postgres://postgres:password@localhost:5432/gocook?sslmode=disable --path sql/migrations up",
+            "group": "none",
+            "problemMatcher": [
+                "$go"
+            ],
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "db:migration:down",
+            "command": "sql/migrate -database postgres://postgres:password@localhost:5432/gocook?sslmode=disable --path sql/migrations down",
+            "group": "none",
+            "problemMatcher": [
+                "$go"
+            ],
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "db:migration:create",            
+            "command": "",
+            "args": [
+                { "value": "$migrationName = 'curl -L https://github.com/golang-migrate/migrate/releases/download/v3.4.0/migrate.windows-amd64.exe.tar.gz > sql/migrate.tar.gz';", "quoting": "weak"},
+                { "value": "sql/migrate create --ext .sql --dir sql/migrations $migrationName", "quoting": "weak"},
+            ],
+            "group": "none",
+            "problemMatcher": [
+                "$go"
+            ],
+            "presentation": {
+                "reveal": "always"
+            }            
+        }        
+    ]
+}
