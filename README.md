@@ -61,13 +61,13 @@ GoCook uses OAuth 2.0, provided at the moment from Auth0 - `common/auth` is the 
 
 Authentication will validate that a user has a valid session and should have access to the API by using JWT signed with a RSA256 private key.
 
-Switching to an alternate token issuer / IdP shouldn't be too much of a problem should you need to. Just configure the issuer, audience and JWKS endpoint in `cook.json` (don't worry, you can publically share this information). 
+Switching to an alternate token issuer / IdP shouldn't be too much of a problem should you need to. Just configure the issuer, audience and JWKS endpoint in `cook.json` (don't worry, you can publically share this information).
 
 ### Authenticating an API endpoint
 
 `common/auth` offers up `AuthenticationMiddleware`. Use it as middleware on any endpoint or router that you want to force a valid user session for.
 
-This will also set `token *jwt.Token` and `userId string` to the gin context of the request, to remove any requirement to parse the token again. 
+This will also set `token *jwt.Token` and `userId string` to the gin context of the request, to remove any requirement to parse the token again.
 
 ### JWTs and JWKS and RSA256 oh my!
 
@@ -78,9 +78,9 @@ Unfortunately the current stable version (3.2.0) of the library has poor example
 * JWKS support
   * Support for retrieving a key from  a JWKS has been added using the `kid` of the JWT
   * Keys are cached (in a pretty naive and non-robust manner)
-    * Whenever a `kid` in a token can't be found the cache is resynced           
+    * Whenever a `kid` in a token can't be found the cache is resynced
 * RSA256 support
-  * Support for creating an RSA 256 public key from the exponent and modulus of the retrieved JSON web key has been added 
+  * Support for creating an RSA 256 public key from the exponent and modulus of the retrieved JSON web key has been added
 * Extended support for standard JWT claims
   * `exp` is validated to be in the future
   * `iss` is validated to be whatever is set in the config
@@ -108,13 +108,13 @@ main.exe
 
 ## Secrets
 
-Secrets are expected to be provided as params on the CLI. 
+Secrets are expected to be provided as params on the CLI.
 
 This is a simple solution which will be exchanged for either encrypting the strings with a cert, KWS/Key Vault in the future.
 
 ## Database
 
-Presently the project is setup to use Postgres as a data store. 
+Presently the project is setup to use Postgres as a data store.
 
 Database management is carried out through database migration files (`github.com/golang-migrate/migrate`) allowing for traceability of changes and super fast provisioning of new stores.
 
@@ -154,7 +154,7 @@ $ migrate -database postgres://<user>:<password>@localhost:5432/gocook?sslmode=d
 
 ### Notes
 
-* For windows you need build version 17063 or greater to get easy curl/tar 
+* For windows you need build version 17063 or greater to get easy curl/tar
 * You'll also need run a few more commands due to the lack of support for pipes:
 
 ```bash
@@ -191,25 +191,25 @@ $ migrate create --ext .sql --dir migrations <name>
   * Highly contentious but there are reasons...
   * We take complete control of database migrations
   * We take complete control of the database arch and capabilities
-  * We hopefully get a performance boost (we can definitely profile database performance a bit more easily) 
+  * We hopefully get a performance boost (we can definitely profile database performance a bit more easily)
   * We do loose quite a lot of development speed (but some other considerations counter this)
   * We unlock the next point...
 * We don't write SQL in application code - stored procedures all the way
-  * We push all storage related logic out of the application, effectively turning postgres into its own kind of API 
+  * We push all storage related logic out of the application, effectively turning postgres into its own kind of API
   * We get a security boost against injections (but we still need to validate inputs!)
   * We unlock a more sophisticated permissions model (access can be granted to procedures, not just dbs/schemas/tables)
   * We hopefully get a performance boost
   * We can test these using `pgTap`
 * We treat Postgres as a schemaless store with super powers
   * We make heavy use of JSONB columns
-  * This allows us to get schemaless models (in a NoSQL kind of way) but retain all the goodness of a relational store 
+  * This allows us to get schemaless models (in a NoSQL kind of way) but retain all the goodness of a relational store
 * All these points also serve as a really good learning exercise for the author, especially if it needs to change later :)
 
 ## What It Does right Now
 
 * A restful API using `gin-gonic/gin`
   * Endpoints for CRUD on basic recipe models  
-  * `recipe` package should be splittable 
+  * `recipe` package should be splittable
 * JWT based authentication using OAuth2 as gin middleware
   * Everyone likes JWTs
   * Unsupported functionality has been added to support Auth0 (probably works for Okta too)
