@@ -44,15 +44,29 @@ func hasExpired(token *jwt.Token) (bool, error){
 }
 
 func hasInvalidAudience(token *jwt.Token)(bool, error){
-	aud := token.Claims.(jwt.MapClaims)["aud"].(string)
+	requiredAudience := viper.GetString("AUTH_AUDIENCE")
 
-	expectedAudience := viper.GetString("AUTH_AUDIENCE")
+	gty := token.Claims.(jwt.MapClaims)["gty"]
 
-	if aud != expectedAudience {
-		return true, fmt.Errorf("Token audience %v is not valid", aud)
+	if gty == "client-credentials" {
+		audience := token.Claims.(jwt.MapClaims)["aud"]
+
+		if audience == requiredAudience {
+			return false, nil
+		}
+
+		return true, fmt.Errorf("Token audience %v is not valid", audience)
+	} else {
+		audienceClaims := token.Claims.(jwt.MapClaims)["aud"].([]interface{}) // When the token is generated from the implicit flow it may have multiple audiences
+
+		for _, claim := range audienceClaims {
+			if claim == requiredAudience {
+				return false, nil
+			}
+		}
+
+		return true, fmt.Errorf("token audienceClaims %v is not valid", audienceClaims)
 	}
-
-	return false, nil
 }
 
 func hasInvalidIssuer(token *jwt.Token)(bool, error){
