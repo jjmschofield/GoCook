@@ -6,7 +6,7 @@ It might even calculate a shopping list for you and let you collaborate on meal 
 
 This project isn't really anything serious - it exists largely for the author to learn Go.
 
-The backlog for the project can be found [Trello](https://trello.com/b/UFt1f8nB/gocook).
+The backlog for the project can be found on [Trello](https://trello.com/b/UFt1f8nB/gocook).
 
 ## Getting Started
 
