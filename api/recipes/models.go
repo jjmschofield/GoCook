@@ -21,7 +21,7 @@ type Recipe struct {
 
 // swagger:model
 type Ingredient struct {
-	Id   string  `json:"string" validate:"omitempty,uuid4"`
+	Id   string  `json:"id" validate:"omitempty,uuid4"`
 	Name string  `json:"name" binding:"required" validate:"required,min=0,max=50"`
 	Qty  float32 `json:"qty" validate:"omitempty,min=0,max=10000"`
 	Unit string  `json:"unit" validate:"omitempty,oneof=g mil cup tea table pinch"`
@@ -29,7 +29,7 @@ type Ingredient struct {
 
 // swagger:model
 type Step struct {
-	Id          string `json:"string" validate:"omitempty,uuid4"`
+	Id          string `json:"id" validate:"omitempty,uuid4"`
 	Name        string `json:"name" binding:"required" validate:"required,min=0,max=50"`
 	Description string `json:"description" validate:"omitempty,min=0,max=2000"`
 	Time        Time   `json:"time"`
