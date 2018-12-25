@@ -4,7 +4,9 @@ GoCook is intended to be a simple application to record recipes and build meal p
 
 It might even calculate a shopping list for you and let you collaborate on meal plans with a partner!
 
-This project isn't really anything serious - it exists largely for the author to learn Golang.
+This project isn't really anything serious - it exists largely for the author to learn Go.
+
+The backlog for the project can be found on [Trello](https://trello.com/b/UFt1f8nB/gocook).
 
 ## Getting Started
 
