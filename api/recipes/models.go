@@ -13,7 +13,7 @@ type Recipe struct {
 	Steps        []Step       `json:"steps" binding:"required" validate:"required,dive"`
 	Ingredients  []Ingredient `json:"ingredients" binding:"required" validate:"required,dive"`
 	Tags         []string     `json:"tags" binding:"required" validate:"required,dive,min=1,max=15"`
-	Url          string       `json:"url" validate:"omitempty,uri"`
+	Source       Source       `json:"url" validate:"omitempty,uri"`
 	ImgUrl       string       `json:"imgUrl" validate:"omitempty,uri"`
 	Owner        string       `json:"owner"`
 	Contributors []string     `json:"contributors" binding:"required" validate:"required,dive,uuid4"`
@@ -39,4 +39,9 @@ type Step struct {
 type Time struct {
 	PrepSec int `json:"prepSec" validate:"omitempty,min=0"`
 	CookSec int `json:"cookSec" validate:"omitempty,min=0"`
+}
+
+type Source struct {
+	Name string `json:"name" binding:"required" validate:"required,min=0,max=50"`
+	Url  string `json:"url" validate:"omitempty,uri"`
 }
