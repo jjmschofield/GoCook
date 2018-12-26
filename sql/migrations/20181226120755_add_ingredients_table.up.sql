@@ -3,7 +3,7 @@ BEGIN;
 CREATE TABLE ingredients.ingredients
 (
     id uuid NOT NULL,
-    name char(40) NOT NULL,
+    name char(40),
     data jsonb NOT NULL,
 	  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP NOT NULL DEFAULT NOW(),

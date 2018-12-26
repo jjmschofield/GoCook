@@ -3,14 +3,13 @@ BEGIN;
 CREATE FUNCTION ingredients.save_new_ingredient(new_id uuid, new_data json)
 RETURNS TABLE(
         id uuid,
-        name char(40),
         data jsonb,
         created_at TIMESTAMP,
         updated_at TIMESTAMP
     )
 AS $$
 BEGIN
-	INSERT INTO ingredients.ingredients
+	INSERT INTO ingredients.ingredients(id, data)
 	  VALUES (
 	    new_id,
 	    new_data
@@ -18,7 +17,6 @@ BEGIN
   RETURN QUERY
 		SELECT
       ingredients.ingredients.id,
-      ingredients.ingredients.name,
       ingredients.ingredients.data,
       ingredients.ingredients.created_at,
       ingredients.ingredients.updated_at

@@ -12,11 +12,11 @@ AS $$
 BEGIN
 	RETURN QUERY
       SELECT
-        id,
-        name,
-        data,
-        created_at,
-        updated_at
+        ingredients.ingredients.id,
+        ingredients.ingredients.name,
+        ingredients.ingredients.data,
+        ingredients.ingredients.created_at,
+        ingredients.ingredients.updated_at
       FROM ingredients.ingredients;
 END;
 $$ LANGUAGE plpgsql;
