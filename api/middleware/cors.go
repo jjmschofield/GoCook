@@ -13,6 +13,10 @@ func AddCorsMiddleware(router *gin.Engine) *gin.Engine {
 		"https://go-cook-web.herokuapp.com/",
 	}
 
+	config.AllowHeaders = []string{
+		"authorization",
+	}
+
 	router.Use(cors.New(config))
 
 	return router
