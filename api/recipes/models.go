@@ -13,7 +13,7 @@ type Recipe struct {
 	Steps        []Step       `json:"steps" binding:"required" validate:"required,dive"`
 	Ingredients  []Ingredient `json:"ingredients" binding:"required" validate:"required,dive"`
 	Tags         []string     `json:"tags" binding:"required" validate:"required,dive,min=1,max=15"`
-	Source       Source       `json:"url" validate:"omitempty,uri"`
+	Source       Source       `json:"source" validate:"omitempty,uri"`
 	ImgUrl       string       `json:"imgUrl" validate:"omitempty,uri"`
 	Owner        string       `json:"owner"`
 	Contributors []string     `json:"contributors" binding:"required" validate:"required,dive,uuid4"`
