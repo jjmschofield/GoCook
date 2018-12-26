@@ -25,11 +25,16 @@ import (
 //       200: []Recipe
 //       500: ErrorPayload
 func getAllRequestHandler(context *gin.Context) {
-	recipes, err := GetAllFromStore(context.MustGet("userId").(string))
+	recipeMap, err := GetAllFromStore(context.MustGet("userId").(string))
 
 	if err != nil{
-		respond.InternalError(context,"Couldn't retrieve recipes")
+		respond.InternalError(context,"Couldn't retrieve recipeMap")
 		return
+	}
+
+	recipes := []Recipe{}
+	for _, recipe := range recipeMap {
+		recipes = append(recipes, recipe)
 	}
 
 	respond.Ok(context, recipes)
