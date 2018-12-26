@@ -2,7 +2,7 @@ package validate
 
 import "gopkg.in/go-playground/validator.v9"
 
-func Struct(obj interface{}) (isValid bool, validationMessage string){
+func Struct(obj interface{}) (isValid bool, validationMessage string) {
 	validate := validator.New()
 
 	structValidationErr := validate.Struct(obj)

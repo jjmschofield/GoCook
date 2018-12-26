@@ -1,7 +1,7 @@
 package ingredients
 
 // swagger:response
-type IngredientResponse struct{
+type IngredientResponse struct {
 	Body Ingredient
 }
 

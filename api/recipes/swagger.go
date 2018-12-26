@@ -1,7 +1,7 @@
 package recipes
 
 // swagger:response
-type RecipeResponse struct{
+type RecipeResponse struct {
 	Body Recipe
 }
 
@@ -22,4 +22,3 @@ type RecipeBodyParam struct {
 	// required: true
 	Recipe Recipe `json:"recipe"`
 }
-

@@ -1,15 +1,15 @@
 package auth
 
 import (
-	"errors"
-	"log"
-	"github.com/jjmschofield/GoCook/common/jsonhttp"
-	"fmt"
 	"crypto/rsa"
+	"errors"
+	"fmt"
+	"github.com/jjmschofield/GoCook/common/jsonhttp"
 	"github.com/spf13/viper"
+	"log"
 )
 
-type jsonWebKey struct{
+type jsonWebKey struct {
 	Alg string   `json:"alg"`
 	Kty string   `json:"kty"`
 	Use string   `json:"use"`
@@ -22,7 +22,7 @@ type jsonWebKey struct{
 
 var jwksCache []jsonWebKey
 
-func getRsaPublicKeyFromJwks(kid string) (*rsa.PublicKey, error){
+func getRsaPublicKeyFromJwks(kid string) (*rsa.PublicKey, error) {
 	jwk, jwkError := getJwk(kid)
 
 	if jwkError != nil {
@@ -65,7 +65,7 @@ func getJwkFromCache(kid string) (jsonWebKey, bool) {
 	return jsonWebKey{}, false
 }
 
-func syncJwksCache() error{
+func syncJwksCache() error {
 	keys, err := getJwksFromEndpoint()
 
 	if err != nil {
@@ -77,7 +77,7 @@ func syncJwksCache() error{
 	return nil
 }
 
-func getJwksFromEndpoint() ([]jsonWebKey, error){
+func getJwksFromEndpoint() ([]jsonWebKey, error) {
 	var jwks struct {
 		Keys []jsonWebKey `json:"keys"`
 	}

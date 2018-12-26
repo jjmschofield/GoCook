@@ -24,8 +24,8 @@ import (
 func getAllRequestHandler(context *gin.Context) {
 	ingredients, err := GetAllFromStore()
 
-	if err != nil{
-		respond.InternalError(context,"Couldn't retrieve ingredients")
+	if err != nil {
+		respond.InternalError(context, "Couldn't retrieve ingredients")
 		return
 	}
 

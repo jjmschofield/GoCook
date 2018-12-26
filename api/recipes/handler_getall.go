@@ -27,8 +27,8 @@ import (
 func getAllRequestHandler(context *gin.Context) {
 	recipeMap, err := GetAllFromStore(context.MustGet("userId").(string))
 
-	if err != nil{
-		respond.InternalError(context,"Couldn't retrieve recipeMap")
+	if err != nil {
+		respond.InternalError(context, "Couldn't retrieve recipeMap")
 		return
 	}
 

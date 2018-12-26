@@ -6,7 +6,7 @@ type MessageResponse struct {
 }
 
 // swagger:model
-type MessagePayload struct{
+type MessagePayload struct {
 	Message string `json:"message"`
 }
 
@@ -16,6 +16,6 @@ type ErrorResponse struct {
 }
 
 // swagger:model
-type ErrorPayload struct{
+type ErrorPayload struct {
 	Error string `json:"error"`
 }

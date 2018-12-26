@@ -1,11 +1,11 @@
 package config
 
 import (
-	"github.com/spf13/viper"
 	"fmt"
+	"github.com/spf13/viper"
 )
 
-func LoadNonSensitiveConfig(){
+func LoadNonSensitiveConfig() {
 	setDefaultConfig()
 
 	viper.SetConfigName("cook")
@@ -17,7 +17,7 @@ func LoadNonSensitiveConfig(){
 	}
 }
 
-func setDefaultConfig(){
+func setDefaultConfig() {
 	viper.SetDefault("AUTH_JWKS_ENDPOINT", "AUTH_JWKS_ENDPOINT_NOT_SET")
 	viper.SetDefault("AUTH_ISSUER", "AUTH_ISSUER_NOT_SET")
 	viper.SetDefault("AUTH_AUDIENCE", "AUTH_AUDIENCE_NOT_SET")

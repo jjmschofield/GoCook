@@ -1,15 +1,15 @@
 package auth
 
 import (
-	"crypto/rsa"
-	"math/big"
 	"bytes"
-	"encoding/binary"
-	"strings"
+	"crypto/rsa"
 	"encoding/base64"
+	"encoding/binary"
+	"math/big"
+	"strings"
 )
 
-func createRsaPublicKey(jwk jsonWebKey) (*rsa.PublicKey, error){
+func createRsaPublicKey(jwk jsonWebKey) (*rsa.PublicKey, error) {
 	modulus, modulusError := getModulusBigInt(jwk.N)
 
 	if modulusError != nil {
@@ -30,7 +30,7 @@ func createRsaPublicKey(jwk jsonWebKey) (*rsa.PublicKey, error){
 	return &publicKey, nil
 }
 
-func getModulusBigInt(base64Modulus string)(*big.Int, error){
+func getModulusBigInt(base64Modulus string) (*big.Int, error) {
 	decodedModulus, decodeError := safeBase64Decode(base64Modulus)
 
 	if decodeError != nil {
@@ -43,7 +43,7 @@ func getModulusBigInt(base64Modulus string)(*big.Int, error){
 	return modulus, nil
 }
 
-func getExponentInt(base64Exponent string)(int, error){
+func getExponentInt(base64Exponent string) (int, error) {
 	decodedExponent, decodeError := safeBase64Decode(base64Exponent)
 
 	if decodeError != nil {
@@ -65,7 +65,7 @@ func getExponentInt(base64Exponent string)(int, error){
 	return int(exponent), nil
 }
 
-func getPaddedExponent(exponent []byte) []byte{
+func getPaddedExponent(exponent []byte) []byte {
 	var paddedExponent []byte
 
 	if len(exponent) < 8 {

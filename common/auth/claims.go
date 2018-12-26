@@ -3,15 +3,15 @@ package auth
 import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
-	"time"
 	"github.com/spf13/viper"
+	"time"
 )
 
-func GetClaim(token *jwt.Token, claim string) string{
+func GetClaim(token *jwt.Token, claim string) string {
 	return token.Claims.(jwt.MapClaims)[claim].(string)
 }
 
-func hasValidClaims(token *jwt.Token) (bool, error){
+func hasValidClaims(token *jwt.Token) (bool, error) {
 
 	invalidExp, expError := hasExpired(token)
 	if invalidExp {
@@ -31,7 +31,7 @@ func hasValidClaims(token *jwt.Token) (bool, error){
 	return true, nil
 }
 
-func hasExpired(token *jwt.Token) (bool, error){
+func hasExpired(token *jwt.Token) (bool, error) {
 	exp := token.Claims.(jwt.MapClaims)["exp"].(float64) // jwt-go is transforming this to a float64 undesirably
 
 	expiryTime := time.Unix(int64(exp), 0)
@@ -43,7 +43,7 @@ func hasExpired(token *jwt.Token) (bool, error){
 	return false, nil
 }
 
-func hasInvalidAudience(token *jwt.Token)(bool, error){
+func hasInvalidAudience(token *jwt.Token) (bool, error) {
 	requiredAudience := viper.GetString("AUTH_AUDIENCE")
 
 	gty := token.Claims.(jwt.MapClaims)["gty"]
@@ -69,7 +69,7 @@ func hasInvalidAudience(token *jwt.Token)(bool, error){
 	}
 }
 
-func hasInvalidIssuer(token *jwt.Token)(bool, error){
+func hasInvalidIssuer(token *jwt.Token) (bool, error) {
 	iss := token.Claims.(jwt.MapClaims)["iss"].(string)
 
 	expectedIssuer := viper.GetString("AUTH_ISSUER")
@@ -80,4 +80,3 @@ func hasInvalidIssuer(token *jwt.Token)(bool, error){
 
 	return false, nil
 }
-

@@ -1,14 +1,14 @@
 package auth
 
 import (
+	"errors"
+	"fmt"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"strings"
-	"github.com/dgrijalva/jwt-go"
-	"fmt"
-	"errors"
 )
 
-func getJwtToken(context *gin.Context) (*jwt.Token, error){
+func getJwtToken(context *gin.Context) (*jwt.Token, error) {
 	bearerToken := getBearerToken(context)
 
 	jwtToken, parseError := jwt.Parse(bearerToken, getSigningKey)
@@ -24,13 +24,13 @@ func getJwtToken(context *gin.Context) (*jwt.Token, error){
 	return jwtToken, nil
 }
 
-func getBearerToken(context *gin.Context) string{
+func getBearerToken(context *gin.Context) string {
 	authHeader := context.GetHeader("Authorization")
 	token := strings.Replace(authHeader, "Bearer ", "", 1)
 	return token
 }
 
-func getSigningKey(token *jwt.Token) (interface{}, error){
+func getSigningKey(token *jwt.Token) (interface{}, error) {
 	isValidAlgo := isSignedWithRsa256(token)
 
 	if !isValidAlgo {
@@ -42,7 +42,7 @@ func getSigningKey(token *jwt.Token) (interface{}, error){
 	return getRsaPublicKeyFromJwks(kid)
 }
 
-func isSignedWithRsa256(token *jwt.Token) bool{
+func isSignedWithRsa256(token *jwt.Token) bool {
 	_, isRsa := token.Method.(*jwt.SigningMethodRSA)
 	return isRsa
 }

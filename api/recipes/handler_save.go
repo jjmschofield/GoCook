@@ -47,7 +47,7 @@ func saveRequestHandler(context *gin.Context) {
 
 	savedRecipe, storeErr := SaveToStore(requestRecipe, context.MustGet("userId").(string))
 
-	if storeErr != nil{
+	if storeErr != nil {
 		respond.InternalError(context, "Failed writing to store")
 		return
 	}

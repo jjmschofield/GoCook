@@ -1,11 +1,11 @@
 package recipes
 
 import (
-	"github.com/satori/go.uuid"
-	"github.com/jjmschofield/GoCook/common/db"
+	"database/sql"
 	"encoding/json"
 	"errors"
-	"database/sql"
+	"github.com/jjmschofield/GoCook/common/db"
+	"github.com/satori/go.uuid"
 )
 
 func GetAllFromStore(userId string) (recipes map[string]Recipe, err error) {
@@ -13,7 +13,7 @@ func GetAllFromStore(userId string) (recipes map[string]Recipe, err error) {
 }
 
 func GetFromStoreById(id string, userId string) (Recipe, error) {
-	query := "SELECT data from recipes.get_recipe_by_id('" + id + "','"+ userId+ "')"
+	query := "SELECT data from recipes.get_recipe_by_id('" + id + "','" + userId + "')"
 
 	recipe, err := singleRecipeQuery(query)
 
@@ -94,7 +94,7 @@ func multiRecipeQuery(query string) (recipes map[string]Recipe, queryErr error) 
 	return getAllRecipesFromRows(rows)
 }
 
-func getAllRecipesFromRows(rows *sql.Rows) (recipes map[string]Recipe, err error){
+func getAllRecipesFromRows(rows *sql.Rows) (recipes map[string]Recipe, err error) {
 	storeRecipes := make(map[string]Recipe)
 
 	for rows.Next() {
@@ -109,7 +109,7 @@ func getAllRecipesFromRows(rows *sql.Rows) (recipes map[string]Recipe, err error
 		var storeRecipe Recipe
 		jsonErr := json.Unmarshal(recipeJson, &storeRecipe)
 
-		if jsonErr != nil{
+		if jsonErr != nil {
 			return nil, jsonErr
 		}
 
