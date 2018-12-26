@@ -26,6 +26,141 @@
   "host": "go-cook.herokuapp.com",
   "basePath": "/",
   "paths": {
+    "/ingredients": {
+      "get": {
+        "description": "Lists all ingredients with no pagination or filtering(!).",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http"
+        ],
+        "tags": [
+          "Ingredients"
+        ],
+        "summary": "Get All Ingredients",
+        "operationId": "GetAllIngredients",
+        "responses": {
+          "200": {
+            "description": "Ingredient",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Ingredient"
+              }
+            }
+          },
+          "500": {
+            "description": "ErrorPayload",
+            "schema": {
+              "$ref": "#/definitions/ErrorPayload"
+            }
+          }
+        }
+      }
+    },
+    "/ingredients{id}": {
+      "get": {
+        "description": "Returns the requested recipe (if the caller has access).",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http"
+        ],
+        "tags": [
+          "Ingredients"
+        ],
+        "summary": "Get Recipe By Id",
+        "operationId": "GetIngredientsById",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "ID",
+            "description": "The ID of the ingredient",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ingredient",
+            "schema": {
+              "$ref": "#/definitions/Ingredient"
+            }
+          },
+          "400": {
+            "description": "MessagePayload",
+            "schema": {
+              "$ref": "#/definitions/MessagePayload"
+            }
+          },
+          "404": {},
+          "500": {
+            "description": "ErrorPayload",
+            "schema": {
+              "$ref": "#/definitions/ErrorPayload"
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Carries out an upsert on a ingredient.\n\nWhen recipe id is null, a new ingredient is created. When it is populated the recipe is updated (if the caller has access)",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http"
+        ],
+        "tags": [
+          "Ingredients"
+        ],
+        "summary": "Save Recipe",
+        "operationId": "UpsertIngredient",
+        "parameters": [
+          {
+            "x-go-name": "Ingredient",
+            "description": "The pet to submit.",
+            "name": "ingredient",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Ingredient"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ingredient",
+            "schema": {
+              "$ref": "#/definitions/Ingredient"
+            }
+          },
+          "400": {
+            "description": "MessagePayload",
+            "schema": {
+              "$ref": "#/definitions/MessagePayload"
+            }
+          },
+          "500": {
+            "description": "ErrorPayload",
+            "schema": {
+              "$ref": "#/definitions/ErrorPayload"
+            }
+          }
+        }
+      }
+    },
     "/recipes": {
       "get": {
         "description": "Lists all recipes with no pagination or filtering(!).\n\nThis will show only those recipes which the caller has been granted access to.",
@@ -176,21 +311,26 @@
     "Ingredient": {
       "type": "object",
       "properties": {
+        "DefaultUnit": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "x-go-name": "Id"
+        },
         "name": {
           "type": "string",
           "x-go-name": "Name"
         },
-        "qty": {
-          "type": "number",
-          "format": "float",
-          "x-go-name": "Qty"
-        },
-        "unit": {
-          "type": "string",
-          "x-go-name": "Unit"
+        "type": {
+          "$ref": "#/definitions/IngredientType"
         }
       },
-      "x-go-package": "github.com/jjmschofield/GoCook/api/recipes"
+      "x-go-package": "github.com/jjmschofield/GoCook/api/ingredients"
+    },
+    "IngredientType": {
+      "type": "string",
+      "x-go-package": "github.com/jjmschofield/GoCook/api/ingredients"
     },
     "MessagePayload": {
       "type": "object",
@@ -229,7 +369,7 @@
         "ingredients": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Ingredient"
+            "$ref": "#/definitions/RecipeIngredient"
           },
           "x-go-name": "Ingredients"
         },
@@ -240,6 +380,9 @@
         "owner": {
           "type": "string",
           "x-go-name": "Owner"
+        },
+        "source": {
+          "$ref": "#/definitions/Source"
         },
         "steps": {
           "type": "array",
@@ -258,14 +401,43 @@
         "time": {
           "$ref": "#/definitions/Time"
         },
-        "url": {
-          "type": "string",
-          "x-go-name": "Url"
-        },
         "yield": {
           "type": "integer",
           "format": "int64",
           "x-go-name": "Yield"
+        }
+      },
+      "x-go-package": "github.com/jjmschofield/GoCook/api/recipes"
+    },
+    "RecipeIngredient": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "x-go-name": "Id"
+        },
+        "qty": {
+          "type": "number",
+          "format": "float",
+          "x-go-name": "Qty"
+        },
+        "unit": {
+          "type": "string",
+          "x-go-name": "Unit"
+        }
+      },
+      "x-go-package": "github.com/jjmschofield/GoCook/api/recipes"
+    },
+    "Source": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "x-go-name": "Name"
+        },
+        "url": {
+          "type": "string",
+          "x-go-name": "Url"
         }
       },
       "x-go-package": "github.com/jjmschofield/GoCook/api/recipes"
@@ -276,6 +448,10 @@
         "description": {
           "type": "string",
           "x-go-name": "Description"
+        },
+        "id": {
+          "type": "string",
+          "x-go-name": "Id"
         },
         "name": {
           "type": "string",
@@ -308,6 +484,14 @@
     "ErrorResponse": {
       "schema": {
         "$ref": "#/definitions/ErrorPayload"
+      },
+      "headers": {
+        "Body": {}
+      }
+    },
+    "IngredientResponse": {
+      "schema": {
+        "$ref": "#/definitions/Ingredient"
       },
       "headers": {
         "Body": {}

@@ -38,6 +38,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/jjmschofield/GoCook/api/ingredients"
 	"github.com/jjmschofield/GoCook/api/middleware"
 	"github.com/jjmschofield/GoCook/api/recipes"
 	"github.com/jjmschofield/GoCook/api/swagger"
@@ -54,6 +55,7 @@ func Start(port string) {
 
 	swagger.AddSwaggerRoutes(router)
 	recipes.AddApiRoutes(router)
+	ingredients.AddApiRoutes(router)
 
 	router.Run(":" + port)
 }
