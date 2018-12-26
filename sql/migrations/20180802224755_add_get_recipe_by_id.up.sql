@@ -1,6 +1,6 @@
 BEGIN;
 
-CREATE FUNCTION recipes.get_recipe_by_id(requested_id uuid, user_id char(40))
+CREATE FUNCTION recipes.get_recipe_by_id(requested_id uuid)
 RETURNS TABLE(
         id uuid,
         data jsonb,
@@ -17,8 +17,7 @@ BEGIN
       recipes.recipes.updated_at
     FROM recipes.recipes
     WHERE
-      recipes.recipes.id = requested_id
-      AND recipes.recipes.owner = user_id;
+      recipes.recipes.id = requested_id;
 END;
 $$ LANGUAGE plpgsql;
 
