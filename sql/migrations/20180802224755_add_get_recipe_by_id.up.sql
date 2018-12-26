@@ -17,8 +17,7 @@ BEGIN
       recipes.recipes.updated_at
     FROM recipes.recipes
     WHERE
-      recipes.recipes.id = requested_id
-      AND recipes.recipes.owner = user_id;
+      recipes.recipes.id = requested_id;
 END;
 $$ LANGUAGE plpgsql;
 

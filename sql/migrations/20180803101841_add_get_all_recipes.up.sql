@@ -15,9 +15,7 @@ BEGIN
         recipes.recipes.data,
         recipes.recipes.created_at,
         recipes.recipes.updated_at
-      FROM recipes.recipes
-      WHERE
-        recipes.recipes.owner = user_id;
+      FROM recipes.recipes;
 END;
 $$ LANGUAGE plpgsql;
 
