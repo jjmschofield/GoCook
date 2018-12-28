@@ -39,15 +39,15 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/jjmschofield/GoCook/api/ingredients"
-	"github.com/jjmschofield/GoCook/api/middleware"
 	"github.com/jjmschofield/GoCook/api/recipes"
 	"github.com/jjmschofield/GoCook/api/swagger"
+	"github.com/jjmschofield/GoCook/common/middleware"
 )
 
 func Start(port string) {
-	router := gin.Default()
+	router := gin.New()
 
-	middleware.AddCorsMiddleware(router)
+	middleware.UseDefaults(router)
 
 	router.LoadHTMLGlob("api/public/*")
 

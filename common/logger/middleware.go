@@ -18,7 +18,7 @@ func ContextLoggerMiddleware(service string) func(context *gin.Context) {
 	}
 }
 
-func RequestLogMiddleware(context *gin.Context) {
+func RequestLoggerMiddleware(context *gin.Context) {
 	logger := context.MustGet("logger").(zap.Logger)
 
 	path := context.Request.URL.Path

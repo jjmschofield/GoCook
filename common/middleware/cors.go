@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AddCorsMiddleware(router *gin.Engine) *gin.Engine {
+func CorsMiddleware() gin.HandlerFunc {
 	config := cors.DefaultConfig()
 
 	config.AllowOrigins = []string{
@@ -17,7 +17,5 @@ func AddCorsMiddleware(router *gin.Engine) *gin.Engine {
 		"authorization",
 	}
 
-	router.Use(cors.New(config))
-
-	return router
+	return cors.New(config)
 }

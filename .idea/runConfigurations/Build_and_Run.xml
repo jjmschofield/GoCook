@@ -3,9 +3,10 @@
     <module name="GoMeals" />
     <working_directory value="$PROJECT_DIR$/" />
     <go_parameters value="-i" />
+    <parameters value="--profile dev" />
     <kind value="FILE" />
     <filePath value="$PROJECT_DIR$/main.go" />
     <directory value="$PROJECT_DIR$/" />
-    <method />
+    <method v="2" />
   </configuration>
 </component>
