@@ -10,7 +10,7 @@ func CorsMiddleware() gin.HandlerFunc {
 
 	config.AllowOrigins = []string{
 		"http://localhost:3000",
-		"https://go-cook-web.herokuapp.com/",
+		"https://go-cook-web.herokuapp.com",
 	}
 
 	config.AllowHeaders = []string{
