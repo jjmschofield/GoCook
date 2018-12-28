@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jjmschofield/GoCook/common/respond"
 	"github.com/jjmschofield/GoCook/common/validate"
+	"go.uber.org/zap"
 )
 
 // swagger:route GET /ingredients{id} Ingredients GetIngredientsById
@@ -26,6 +27,7 @@ import (
 //		 404:
 //       500: ErrorPayload
 func getByIdRequestHandler(context *gin.Context) {
+	logger := context.MustGet("logger").(zap.Logger)
 	id := context.Param("id")
 
 	validRequest, validationError := isValidGetByIdRequest(id)
@@ -38,6 +40,7 @@ func getByIdRequestHandler(context *gin.Context) {
 	recipe, storeErr := GetFromStoreById(id)
 
 	if storeErr != nil {
+		logger.Error("Failed to get ingredient with id " + id, zap.Error(storeErr))
 		respond.NotFound(context)
 		return
 	}

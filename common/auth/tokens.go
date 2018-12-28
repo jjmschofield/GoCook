@@ -14,11 +14,11 @@ func getJwtToken(context *gin.Context) (*jwt.Token, error) {
 	jwtToken, parseError := jwt.Parse(bearerToken, getSigningKey)
 
 	if parseError != nil {
-		return nil, fmt.Errorf("JWT token could not be parsed", parseError)
+		return nil, fmt.Errorf("JWT token is not valid: %v", parseError)
 	}
 
 	if !jwtToken.Valid {
-		return nil, errors.New("Parsed JWT is not valid")
+		return nil, errors.New("parsed JWT is not valid")
 	}
 
 	return jwtToken, nil
@@ -34,7 +34,7 @@ func getSigningKey(token *jwt.Token) (interface{}, error) {
 	isValidAlgo := isSignedWithRsa256(token)
 
 	if !isValidAlgo {
-		return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 	}
 
 	kid := token.Header["kid"].(string)

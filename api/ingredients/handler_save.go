@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jjmschofield/GoCook/common/respond"
 	"github.com/jjmschofield/GoCook/common/validate"
+	"go.uber.org/zap"
 )
 
 // swagger:route POST /ingredients{id} Ingredients UpsertIngredient
@@ -27,6 +28,7 @@ import (
 //		 400: MessagePayload
 //       500: ErrorPayload
 func saveRequestHandler(context *gin.Context) {
+	logger := context.MustGet("logger").(zap.Logger)
 	var requestIngredient Ingredient
 
 	bindError := context.Bind(&requestIngredient)
@@ -46,6 +48,7 @@ func saveRequestHandler(context *gin.Context) {
 	ingredient, storeErr := SaveToStore(requestIngredient, context.MustGet("userId").(string))
 
 	if storeErr != nil {
+		logger.Error("Failed to save ingredient with id " + requestIngredient.Id, zap.Error(storeErr))
 		respond.InternalError(context, "Failed writing to store")
 		return
 	}

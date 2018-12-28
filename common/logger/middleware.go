@@ -32,25 +32,25 @@ func RequestLoggerMiddleware(context *gin.Context) {
 }
 
 func logRequestStart(logger zap.Logger, context *gin.Context, path string, start time.Time) {
-	logger.Info("Request started "+ path, getRequestContext(context, start)...)
+	logger.Info("Request started "+path, getRequestContext(context, start)...)
 }
 
-func logRequestEnd(logger zap.Logger, context *gin.Context,  path string, start time.Time) {
+func logRequestEnd(logger zap.Logger, context *gin.Context, path string, start time.Time) {
 	if len(context.Errors) > 0 {
 		for _, e := range context.Errors.Errors() {
 			logger.Error(e)
 		}
-	} else{
-		status := context.Writer.Status()
-		requestContext := getEndRequestContext(context, start)
+	}
 
-		if status > 499 {
-			logger.Error("Request failed " + path, requestContext...)
-		} else if status > 399{
-			logger.Warn("Request rejected " + path, requestContext...)
-		} else{
-			logger.Info("Request successful " + path, requestContext...)
-		}
+	status := context.Writer.Status()
+	requestContext := getEndRequestContext(context, start)
+
+	if status > 499 {
+		logger.Error("Request failed "+path, requestContext...)
+	} else if status > 399 {
+		logger.Warn("Request rejected "+path, requestContext...)
+	} else {
+		logger.Info("Request successful "+path, requestContext...)
 	}
 }
 

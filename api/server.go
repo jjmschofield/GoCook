@@ -58,7 +58,7 @@ func Start(port string, profile string) {
 	router.GET("", rootHandler)
 
 	swagger.UseSwaggerRoutes(router)
-	
+
 	recipes.UseApiRoutes(router)
 	ingredients.UseApiRoutes(router)
 

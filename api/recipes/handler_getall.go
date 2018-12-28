@@ -3,6 +3,7 @@ package recipes
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/jjmschofield/GoCook/common/respond"
+	"go.uber.org/zap"
 )
 
 // swagger:route GET /recipes Recipes GetAllRecipes
@@ -25,9 +26,13 @@ import (
 //       200: []Recipe
 //       500: ErrorPayload
 func getAllRequestHandler(context *gin.Context) {
-	recipeMap, err := GetAllFromStore(context.MustGet("userId").(string))
+	logger := context.MustGet("logger").(zap.Logger)
+	userId := context.MustGet("userId").(string)
+
+	recipeMap, err := GetAllFromStore(userId)
 
 	if err != nil {
+		logger.Error("Failed to get recipes from store", zap.Error(err))
 		respond.InternalError(context, "Couldn't retrieve recipeMap")
 		return
 	}

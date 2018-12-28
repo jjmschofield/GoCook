@@ -2,14 +2,14 @@ package jsonhttp
 
 import (
 	"encoding/json"
+	"github.com/jjmschofield/GoCook/common/logger"
+	"go.uber.org/zap"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"time"
 )
 
-func Get(url string, model interface{}) (error) {
-
+func Get(url string, model interface{}) error {
 	response, responseError := makeGetRequest(url)
 
 	if responseError != nil {
@@ -24,7 +24,7 @@ func Get(url string, model interface{}) (error) {
 
 	bindError := bindResponseBody(body, model)
 
-	if (bindError != nil) {
+	if bindError != nil {
 		return bindError
 	}
 
@@ -38,8 +38,8 @@ func makeGetRequest(url string) (response *http.Response, error error) {
 
 	response, responseError := httpClient.Get(url)
 
-	if (responseError != nil) {
-		log.Fatal(responseError)
+	if responseError != nil {
+		logger.Error("HTTP Request failed", zap.Error(responseError))
 	}
 
 	return response, responseError
@@ -49,18 +49,18 @@ func readResponseBody(response *http.Response) ([]byte, error) {
 	body, bodyError := ioutil.ReadAll(response.Body)
 
 	if bodyError != nil {
-		log.Fatal(bodyError)
+		logger.Error("Reading body of HTTP response failed", zap.Error(bodyError))
 	}
 
 	return body, bodyError
 }
 
-func bindResponseBody(bodyBytes []byte, model interface{}) (error) {
+func bindResponseBody(bodyBytes []byte, model interface{}) error {
 	jsonErr := json.Unmarshal(bodyBytes, model)
 
-	if (jsonErr != nil) {
-		log.Fatal(jsonErr)
+	if jsonErr != nil {
+		logger.Error("Binding JSON in body of HTTP response failed", zap.Error(jsonErr))
 	}
 
-	return jsonErr;
+	return jsonErr
 }

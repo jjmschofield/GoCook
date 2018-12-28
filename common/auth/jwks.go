@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/jjmschofield/GoCook/common/jsonhttp"
+	"github.com/jjmschofield/GoCook/common/logger"
 	"github.com/spf13/viper"
-	"log"
 )
 
 type jsonWebKey struct {
@@ -46,7 +46,7 @@ func getJwk(kid string) (jsonWebKey, error) {
 		if inCache {
 			return jwk, nil
 		} else {
-			log.Printf("Key %v not found in cache, refreshing key cache from JWKS endpoint", kid)
+			logger.Debug(fmt.Sprintf("Key %v not found in cache, refreshing key cache from JWKS endpoint", kid))
 			syncJwksCache()
 		}
 	}

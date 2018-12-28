@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jjmschofield/GoCook/common/respond"
 	"github.com/jjmschofield/GoCook/common/validate"
+	"go.uber.org/zap"
 )
 
 // swagger:route GET /recipes{id} Recipes GetRecipesById
@@ -29,6 +30,7 @@ import (
 //       500: ErrorPayload
 func getByIdRequestHandler(context *gin.Context) {
 	id := context.Param("id")
+	logger := context.MustGet("logger").(zap.Logger)
 
 	validRequest, validationError := isValidGetByIdRequest(id)
 
@@ -40,12 +42,12 @@ func getByIdRequestHandler(context *gin.Context) {
 	recipe, storeErr := GetFromStoreById(id, context.MustGet("userId").(string))
 
 	if storeErr != nil {
+		logger.Error("Could not get recipe with id " + id, zap.Error(storeErr))
 		respond.NotFound(context)
 		return
 	}
 
 	respond.Ok(context, recipe)
-
 }
 
 func isValidGetByIdRequest(id string) (isValid bool, validationMessage string) {

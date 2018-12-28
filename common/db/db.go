@@ -2,8 +2,9 @@ package db
 
 import (
 	"database/sql"
+	"github.com/jjmschofield/GoCook/common/logger"
 	_ "github.com/lib/pq"
-	"log"
+	"go.uber.org/zap"
 )
 
 var dbPool *sql.DB
@@ -15,7 +16,7 @@ func ConnectDb(connStr string) {
 	)
 
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal("Could not open database", zap.Error(err))
 	}
 
 	dbPool = db
@@ -25,7 +26,7 @@ func ConnectDb(connStr string) {
 	conErr := IsConnected()
 
 	if conErr != nil {
-		log.Fatal(conErr)
+		logger.Fatal("Could not get connection to database", zap.Error(conErr))
 	}
 }
 

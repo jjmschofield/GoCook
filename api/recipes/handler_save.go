@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jjmschofield/GoCook/common/respond"
 	"github.com/jjmschofield/GoCook/common/validate"
+	"go.uber.org/zap"
 )
 
 // swagger:route POST /recipes{id} Recipes UpsertRecipe
@@ -27,8 +28,7 @@ import (
 //		 400: MessagePayload
 //       500: ErrorPayload
 func saveRequestHandler(context *gin.Context) {
-	// TODO - the upsert style here is making this quite a long method
-	// TODO - and more is needed to support sending a 403 when trying to update a record you don't have access too
+	logger := context.MustGet("logger").(zap.Logger)
 	var requestRecipe Recipe
 
 	bindError := context.Bind(&requestRecipe)
@@ -48,6 +48,7 @@ func saveRequestHandler(context *gin.Context) {
 	savedRecipe, storeErr := SaveToStore(requestRecipe, context.MustGet("userId").(string))
 
 	if storeErr != nil {
+		logger.Error("Could not save recipe with id " + requestRecipe.Id, zap.Error(storeErr))
 		respond.InternalError(context, "Failed writing to store")
 		return
 	}
