@@ -2,10 +2,14 @@ package config
 
 import (
 	"fmt"
+	"github.com/jjmschofield/GoCook/common/logger"
 	"github.com/spf13/viper"
+	"go.uber.org/zap"
 )
 
 func LoadNonSensitiveConfig() {
+	logger.Info("Loading non-sensitive config from ./cook.json")
+
 	setDefaultConfig()
 
 	viper.SetConfigName("cook")
@@ -13,7 +17,7 @@ func LoadNonSensitiveConfig() {
 
 	err := viper.ReadInConfig() // Find and read the config file
 	if err != nil { // Handle errors reading the config file
-		panic(fmt.Errorf("Fatal error config file: %s \n", err))
+		logger.Fatal(fmt.Sprintf("Fatal error config file: %s \n", err), zap.Error(err))
 	}
 }
 
