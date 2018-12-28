@@ -27,7 +27,7 @@ func main() {
 
 	logger.Info("Server listening via HTTP on " + args.port)
 
-	api.Start(args.port)
+	api.Start(args.port, args.profile)
 }
 
 func getCommandLineArgs() cliArgs {

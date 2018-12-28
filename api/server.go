@@ -44,9 +44,13 @@ import (
 	"github.com/jjmschofield/GoCook/common/middleware"
 )
 
-func Start(port string) {
-	router := gin.New()
+func Start(port string, profile string) {
+	if profile != "dev" {
+		gin.SetMode(gin.ReleaseMode)
+	}
 
+	router := gin.New()
+	
 	middleware.UseDefaults(router)
 
 	router.LoadHTMLGlob("api/public/*")
