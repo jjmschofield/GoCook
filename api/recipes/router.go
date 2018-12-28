@@ -5,7 +5,7 @@ import (
 	"github.com/jjmschofield/GoCook/common/auth"
 )
 
-func AddApiRoutes(router *gin.Engine) *gin.Engine {
+func UseApiRoutes(router *gin.Engine) *gin.Engine {
 	routerGroup := router.Group("recipes")
 
 	addMiddleware(routerGroup)

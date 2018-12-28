@@ -50,16 +50,17 @@ func Start(port string, profile string) {
 	}
 
 	router := gin.New()
-	
+
 	middleware.UseDefaults(router)
 
 	router.LoadHTMLGlob("api/public/*")
 
 	router.GET("", rootHandler)
 
-	swagger.AddSwaggerRoutes(router)
-	recipes.AddApiRoutes(router)
-	ingredients.AddApiRoutes(router)
+	swagger.UseSwaggerRoutes(router)
+	
+	recipes.UseApiRoutes(router)
+	ingredients.UseApiRoutes(router)
 
 	router.Run(":" + port)
 }

@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AddSwaggerRoutes(router *gin.Engine) *gin.Engine {
+func UseSwaggerRoutes(router *gin.Engine) *gin.Engine {
 	routerGroup := router.Group("swagger")
 	addMiddleware(routerGroup)
 	addRoutes(routerGroup)
